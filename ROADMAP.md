@@ -19,12 +19,12 @@ Levels: 1 = foundation, 2 = core, 3 = advanced.
 - [x] Error Handling
 - [x] Debounce & Throttle
 - [x] Narrowing & Type Guards (includes discriminated unions)
-- [ ] Modules: import/export (1)
-- [ ] Array methods that matter: map, filter, reduce (1)
+- [x] Modules: Import & Export
+- [x] Array Methods That Matter
 - [ ] Immutability and references (2)
-- [ ] PHP for JavaScript devs: arrays, type juggling, strict types (1)
-- [ ] PHP OOP: interfaces, traits, and visibility (2)
-- [ ] Composer and autoloading (1)
+- [x] PHP for JavaScript Devs
+- [x] PHP OOP: Interfaces & Traits
+- [x] Composer & Autoloading
 - [ ] Dates and timezones (2)
 - [ ] Regex you actually need (2)
 - [ ] Iterators and generators (3)
@@ -40,11 +40,11 @@ Levels: 1 = foundation, 2 = core, 3 = advanced.
 - [x] Custom Hooks
 - [x] Code Splitting & Lazy Loading
 - [x] Accessibility Basics
-- [ ] CSS layout: flexbox and grid mental models (1)
-- [ ] CSS cascade and specificity (1)
-- [ ] Responsive and mobile-first design (1)
-- [ ] Browser storage: cookies vs localStorage vs sessionStorage (1)
-- [ ] Lifting state up vs context (1)
+- [x] CSS Layout: Flexbox & Grid
+- [x] Cascade & Specificity
+- [x] Responsive & Mobile-First
+- [x] Cookies vs localStorage vs sessionStorage
+- [x] Lifting State vs Context
 - [ ] Forms and validation (2)
 - [ ] React error boundaries (2)
 - [ ] Optimistic updates (2)
@@ -65,8 +65,8 @@ Levels: 1 = foundation, 2 = core, 3 = advanced.
 - [x] Caching Layers & Redis
 - [x] Rate Limiting
 - [x] WebSockets vs Polling vs SSE
-- [ ] Validation and DTOs (1)
-- [ ] Scheduled jobs and cron (1)
+- [x] Validation & DTOs
+- [x] Scheduled Jobs & Cron
 - [ ] Laravel service container and providers (2)
 - [ ] Middleware (concept across frameworks) (2)
 - [ ] GraphQL mental model: queries, mutations, and when it beats REST (2)
@@ -85,7 +85,7 @@ Levels: 1 = foundation, 2 = core, 3 = advanced.
 - [x] Indexes
 - [x] Pagination: Offset vs Cursor
 - [x] Locking: Optimistic vs Pessimistic
-- [ ] Seeding and factories (1)
+- [x] Seeding & Factories
 - [ ] Data modeling: normalization in plain words (2)
 - [ ] Connection pooling (2)
 - [ ] EXPLAIN and query plans (3)
@@ -97,12 +97,12 @@ Levels: 1 = foundation, 2 = core, 3 = advanced.
 
 - [x] Shopify Metafields
 - [x] Shopify Webhooks
-- [ ] Money math: floats, cents, and currencies (1)
-- [ ] Order lifecycle: draft, paid, fulfilled, refunded (1)
-- [ ] Liquid templating mental model (1)
-- [ ] Theme architecture: sections, blocks, snippets (1)
-- [ ] Cart and checkout flow (1)
-- [ ] Payments and PCI basics: never touch card numbers (2)
+- [x] Money Math
+- [x] Order Lifecycle
+- [x] Liquid Mental Model
+- [x] Theme Architecture
+- [x] Cart & Checkout Flow
+- [x] Payments & PCI Basics
 - [ ] Shopify app types and OAuth (2)
 - [ ] Storefront API vs Admin API (2)
 - [ ] Product variants and options model (2)
@@ -124,8 +124,8 @@ Levels: 1 = foundation, 2 = core, 3 = advanced.
 - [x] OAuth in Plain Words
 - [x] Docker Mental Model
 - [x] Timeouts, Retries & Circuit Breakers
-- [ ] HTTP basics: request anatomy, status code families (1)
-- [ ] Environment variables and secrets (1)
+- [x] HTTP Basics
+- [x] Environment Variables & Secrets
 - [ ] CI/CD pipelines (2)
 - [ ] Design patterns you actually meet: strategy, factory, observer (2)
 - [ ] Feature flags (2)

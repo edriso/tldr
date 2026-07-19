@@ -137,7 +137,7 @@ field and component the same way nt-trainings does it.
 
 ### Writing style rules
 
-- **Short.** Max 115 lines per file. To the point, zero fluff.
+- **Short.** Aim for ~100 lines per file; never exceed 125. To the point, zero fluff.
 - **Easy English.** Short sentences, common words, explain every acronym on
   first use ("RUM (Real User Monitoring)").
 - **NO em dashes (—) or en dashes (–), ever.** Use commas, colons, periods, or
