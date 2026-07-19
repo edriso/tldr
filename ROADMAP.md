@@ -8,7 +8,7 @@ roughly from foundation to senior depth. Check items off as they are written.
 When adding a topic, follow the template in [CLAUDE.md](./CLAUDE.md).
 Levels: 1 = foundation, 2 = core, 3 = advanced.
 
-## Languages (JS / TS)
+## Languages (JS / TS / PHP)
 
 - [x] The Event Loop
 - [x] Closures
@@ -22,6 +22,11 @@ Levels: 1 = foundation, 2 = core, 3 = advanced.
 - [ ] Modules: import/export (1)
 - [ ] Array methods that matter: map, filter, reduce (1)
 - [ ] Immutability and references (2)
+- [ ] PHP for JavaScript devs: arrays, type juggling, strict types (1)
+- [ ] PHP OOP: interfaces, traits, and visibility (2)
+- [ ] Composer and autoloading (1)
+- [ ] Dates and timezones (2)
+- [ ] Regex you actually need (2)
 - [ ] Iterators and generators (3)
 - [ ] Structural vs nominal typing (3)
 
@@ -35,9 +40,16 @@ Levels: 1 = foundation, 2 = core, 3 = advanced.
 - [x] Custom Hooks
 - [x] Code Splitting & Lazy Loading
 - [x] Accessibility Basics
+- [ ] CSS layout: flexbox and grid mental models (1)
+- [ ] CSS cascade and specificity (1)
+- [ ] Responsive and mobile-first design (1)
+- [ ] Browser storage: cookies vs localStorage vs sessionStorage (1)
 - [ ] Lifting state up vs context (1)
 - [ ] Forms and validation (2)
+- [ ] React error boundaries (2)
 - [ ] Optimistic updates (2)
+- [ ] Image optimization (2)
+- [ ] SEO for developers: meta tags and structured data (2)
 - [ ] Web performance: Core Web Vitals for devs (2)
 - [ ] Suspense and streaming (3)
 - [ ] SSR, SSG, and hydration (3)
@@ -54,10 +66,14 @@ Levels: 1 = foundation, 2 = core, 3 = advanced.
 - [x] Rate Limiting
 - [x] WebSockets vs Polling vs SSE
 - [ ] Validation and DTOs (1)
+- [ ] Scheduled jobs and cron (1)
 - [ ] Laravel service container and providers (2)
 - [ ] Middleware (concept across frameworks) (2)
+- [ ] GraphQL mental model: queries, mutations, and when it beats REST (2)
 - [ ] File uploads and storage (2)
+- [ ] Designing your own webhooks (2)
 - [ ] Soft deletes and audit trails (2)
+- [ ] API versioning and backwards compatibility (3)
 - [ ] Event-driven architecture (3)
 - [ ] Multi-tenancy patterns (3)
 
@@ -69,19 +85,24 @@ Levels: 1 = foundation, 2 = core, 3 = advanced.
 - [x] Indexes
 - [x] Pagination: Offset vs Cursor
 - [x] Locking: Optimistic vs Pessimistic
+- [ ] Seeding and factories (1)
 - [ ] Data modeling: normalization in plain words (2)
-- [ ] EXPLAIN and query plans (3)
 - [ ] Connection pooling (2)
+- [ ] EXPLAIN and query plans (3)
 - [ ] Full-text search basics (3)
 - [ ] When NoSQL fits (3)
+- [ ] Backups and point-in-time restore (3)
 
 ## E-commerce (Shopify / store work)
 
 - [x] Shopify Metafields
 - [x] Shopify Webhooks
+- [ ] Money math: floats, cents, and currencies (1)
+- [ ] Order lifecycle: draft, paid, fulfilled, refunded (1)
 - [ ] Liquid templating mental model (1)
 - [ ] Theme architecture: sections, blocks, snippets (1)
 - [ ] Cart and checkout flow (1)
+- [ ] Payments and PCI basics: never touch card numbers (2)
 - [ ] Shopify app types and OAuth (2)
 - [ ] Storefront API vs Admin API (2)
 - [ ] Product variants and options model (2)
@@ -110,5 +131,9 @@ Levels: 1 = foundation, 2 = core, 3 = advanced.
 - [ ] Feature flags (2)
 - [ ] Logging and monitoring (2)
 - [ ] DRY, KISS, YAGNI (and when to break them) (2)
+- [ ] Reading unfamiliar code (2)
+- [ ] Code review: giving and receiving (2)
+- [ ] Concurrency and race conditions in plain words (3)
+- [ ] Refactoring legacy code safely (3)
 - [ ] Architecture styles: monolith, modular monolith, microservices (3)
 - [ ] Estimation and breaking down tickets (3)
