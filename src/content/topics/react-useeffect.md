@@ -4,6 +4,15 @@ tldr: useEffect syncs your component with things outside React; if it is inside 
 category: frontend
 tech: react
 order: 21
+level: 2
+related: [react-rendering, client-vs-server-state, js-closures]
+quiz:
+  - q: "After navigating around the app, a chat component shows every message twice. Its effect opens a WebSocket. What is missing?"
+    a: "The cleanup function. Return a function that closes the socket so each re-sync and unmount removes the old subscription."
+  - q: "A cart total lags one frame behind the items. The code stores the total in state and updates it in an effect watching the cart. What is the fix?"
+    a: "Delete the state and the effect. The total is derived data, so compute it inline during render."
+  - q: "In development your effect runs twice on mount. Bug or feature?"
+    a: "Feature. Strict Mode mounts twice on purpose to prove your cleanup undoes the sync. Fix the cleanup, do not fight the double run."
 tags: [effects, lifecycle, cleanup]
 links:
   - title: Synchronizing with Effects
@@ -37,24 +46,44 @@ talk to yourself is a waste, and that is what most bad effects are.
 - Expensive computation: `useMemo`, not an effect writing to state.
 - Resetting state when a prop changes: change the `key` instead.
 
-## Example
+## Worked example
+
+We build a badge that stays in sync with a live inventory feed.
+
+**Step 1: confirm an effect is right.** The inventory feed is an external system that must be opened, watched, and closed, so this is exactly what effects are for.
+
+**Step 2: hold the latest value in state.** The feed will push updates, and state is how they reach the screen.
 
 ```tsx
-import { useEffect, useState } from "react";
-
 export function StockBadge({ productId }: { productId: string }) {
   const [inStock, setInStock] = useState(true);
+```
 
+**Step 3: open the connection inside the effect.** Each message from the server updates state, which re-renders the badge.
+
+```tsx
   useEffect(() => {
-    // External system: a live inventory feed.
     const source = new EventSource(`/api/stock/${productId}`);
     source.onmessage = (e) => setInStock(JSON.parse(e.data).inStock);
-    return () => source.close(); // cleanup: stop listening
-  }, [productId]); // re-sync when the product changes
+```
 
+**Step 4: return the cleanup and declare the dependency.** Cleanup closes the old feed; the `[productId]` dependency re-runs the sync when the product changes.
+
+```tsx
+    return () => source.close();
+  }, [productId]);
+```
+
+**Step 5: render from state.** The component itself stays a pure calculation.
+
+```tsx
   return <span>{inStock ? "In stock" : "Sold out"}</span>;
 }
 ```
+
+## Try it
+
+Rewrite the effect to watch the browser's `online` and `offline` window events and show a connection badge. The cleanup must call `removeEventListener` for both. (Expected: Strict Mode's double mount leaves no duplicate listeners.)
 
 ## Real use case
 

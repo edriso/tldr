@@ -4,6 +4,15 @@ tldr: You never build your own tools, Nest hands each class the tools it asks fo
 category: backend
 tech: nestjs
 order: 30
+level: 2
+related: [solid-principles, nest-request-lifecycle]
+quiz:
+  - q: "A teammate writes `const svc = new PaymentsService()` inside a controller and gets undefined errors from inside PaymentsService. Why?"
+    a: "Calling new skips Nest's container, so PaymentsService's own constructor dependencies are never filled in. Ask for it in the controller's constructor instead."
+  - q: "You inject ReportsService from ReportsModule into BillingModule and get 'Nest can't resolve dependencies'. What two lines are missing?"
+    a: "ReportsModule must list ReportsService in its exports, and BillingModule must add ReportsModule to its imports."
+  - q: "A provider stores the current user in an instance field, and users start seeing each other's data. What went wrong?"
+    a: "Providers are singletons by default, so instance fields are shared across every request. Keep per-request state out of singletons or use request scope."
 tags: [dependency-injection, providers, testing]
 links:
   - title: Providers
@@ -36,26 +45,45 @@ builds its own tools, so you can swap a tool without retraining the surgeon.
 - Swap the real database service for an in-memory stub, no network, no setup.
 - `Test.createTestingModule` lets you override any provider with a mock.
 
-## Example
+## Worked example
+
+We build an `OrdersService` that uses a `UsersService` it never constructs itself.
+
+**Step 1: mark the class as a provider.** `@Injectable()` tells Nest it may create this class and hand it out to others.
 
 ```ts
 @Injectable()
-export class OrdersService {
-  // Nest injects UsersService, this class never builds it
-  constructor(private readonly users: UsersService) {}
+export class OrdersService {}
+```
 
-  async create(userId: string) {
-    const user = await this.users.findOne(userId);
-    return { user, status: 'created' };
-  }
+**Step 2: ask for the dependency in the constructor.** Nest reads the parameter type and injects the shared `UsersService` instance for you.
+
+```ts
+constructor(private readonly users: UsersService) {}
+```
+
+**Step 3: use the injected tool like your own field.** The class calls it without knowing or caring how it was built.
+
+```ts
+async create(userId: string) {
+  const user = await this.users.findOne(userId);
+  return { user, status: 'created' };
 }
+```
 
+**Step 4: wire both providers into a module.** The module is where Nest learns what exists and who can receive it. Miss this and you get "Nest can't resolve dependencies".
+
+```ts
 @Module({
-  providers: [OrdersService, UsersService], // wiring happens here
+  providers: [OrdersService, UsersService],
   controllers: [OrdersController],
 })
 export class OrdersModule {}
 ```
+
+## Try it
+
+Add a `MailerService` to `OrdersService` on your own: inject it as a second constructor parameter and register it in the module's `providers` array. (Nest builds one shared instance and hands it to every class that asks for it.)
 
 ## Real use case
 

@@ -4,6 +4,15 @@ tldr: Async/await is just nicer syntax over promises; know when to chain, await,
 category: language
 tech: javascript
 order: 12
+level: 1
+related: [js-event-loop, react-useeffect]
+quiz:
+  - q: "You write const user = fetchUser(id) without await and pass user to a render function. What does the render receive?"
+    a: "A pending Promise object, not the user data. The code runs without errors but the UI gets a promise instead of the value."
+  - q: "Three independent fetches are awaited one after another, each taking about 300 ms. How long does the function take, and what is the fix?"
+    a: "About 900 ms, because each await waits for the previous one. Start all three first and await Promise.all, so it takes about 300 ms."
+  - q: "You load three optional widgets with Promise.all and one endpoint is down, so the whole page fails. What should you reach for?"
+    a: "Promise.allSettled. It waits for every result and reports each success or failure, so the two healthy widgets still render."
 tags: [async, promises, error-handling]
 links:
   - title: Using promises (MDN)
@@ -30,29 +39,47 @@ different way of standing in line.
 - Awaiting one call after another is **sequential**. Independent work should start first, then be awaited together with `Promise.all`.
 - `Promise.all` rejects on the first failure. Use `Promise.allSettled` when you want every result, good or bad.
 
-## Example
+## Worked example
+
+We load a product page that needs three independent pieces of data.
+
+**Step 1: draw the dependency line.** Product, reviews, and stock do not depend on each other, so nothing forces them to run one after another.
+
+**Step 2: start all three requests at once.** Calling the functions fires the requests immediately; `Promise.all` bundles them into one promise.
 
 ```js
 async function loadProductPage(id) {
   try {
-    // Start all three at once, then wait for all of them.
-    const [product, reviews, stock] = await Promise.all([
+    const all = Promise.all([
       fetchProduct(id),
       fetchReviews(id),
       fetchStock(id),
     ]);
+```
+
+**Step 3: await once and destructure.** The function pauses for the slowest call, not the sum of all three.
+
+```js
+    const [product, reviews, stock] = await all;
     return { product, reviews, stock };
+```
+
+**Step 4: catch in one place.** `Promise.all` rejects on the first failure, so the single `catch` handles all three calls, same as `.catch` on a chain.
+
+```js
   } catch (error) {
-    // One rejection lands here, same as .catch on a chain.
     logError(error);
     throw error;
   }
 }
-
-// Sequential by mistake: three round trips instead of one.
-// const product = await fetchProduct(id);
-// const reviews = await fetchReviews(id);
 ```
+
+## Try it
+
+Add a fourth call, `fetchRelated(product.categoryId)`, which depends on the
+product. Decide where it goes: inside the parallel batch or after it. (After
+the await, since it needs the product first. Total time is the slowest of the
+three plus one extra round trip.)
 
 ## Real use case
 

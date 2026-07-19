@@ -4,6 +4,15 @@ tldr: Answer the user now, do the slow work later on a separate worker process.
 category: backend
 tech: laravel
 order: 33
+level: 2
+related: [idempotency, database-acid]
+quiz:
+  - q: "An order confirmation email takes 4 seconds inside the controller. What should change?"
+    a: "Move the send into a queued job and dispatch it. The request returns immediately and a worker sends the mail in the background."
+  - q: "You dispatch jobs, nothing ever runs, and the jobs table just grows. What is missing?"
+    a: "No worker is running. Start php artisan queue:work and keep it alive with a process supervisor."
+  - q: "A queued charge job failed halfway, retried, and billed the customer twice. What property did the job lack?"
+    a: "Idempotency. Retries mean handle() can run more than once, so it must check whether the charge already happened before charging again."
 tags: [queues, jobs, workers]
 links:
   - title: Queues
@@ -34,27 +43,46 @@ through the work in the background.
 - Failed jobs retry a set number of times (`$tries`), then land in a `failed_jobs` table for inspection and manual retry.
 - The idea is universal: Sidekiq in Ruby, BullMQ in Node, Celery in Python.
 
-## Example
+## Worked example
+
+We move a slow confirmation email out of checkout and onto a worker.
+
+**Step 1: create a job class and mark it queueable.** `ShouldQueue` tells Laravel to store the job for later instead of running it inline. The constructor captures what the job needs.
 
 ```php
 class SendOrderConfirmation implements ShouldQueue
 {
     use Queueable;
 
-    public $tries = 3; // retry up to 3 times before failing
-
     public function __construct(public Order $order) {}
-
-    public function handle(): void
-    {
-        Mail::to($this->order->customer)
-            ->send(new OrderConfirmed($this->order));
-    }
 }
+```
 
-// In the controller: returns immediately, worker sends the mail
+**Step 2: put the slow work in `handle()`.** This method never runs during the request. A worker calls it later, with the order refetched fresh from its ID.
+
+```php
+public function handle(): void
+{
+    Mail::to($this->order->customer)
+        ->send(new OrderConfirmed($this->order));
+}
+```
+
+**Step 3: decide how failure is handled.** Mail servers hiccup, so let the job retry before it lands in `failed_jobs`.
+
+```php
+public $tries = 3; // retry up to 3 times before failing
+```
+
+**Step 4: dispatch from the controller and return.** The request only stores a small payload in the queue backend and replies in milliseconds. A running worker (`php artisan queue:work`) picks it up and sends the mail.
+
+```php
 SendOrderConfirmation::dispatch($order);
 ```
+
+## Try it
+
+Queue the PDF invoice too: write a `GenerateInvoicePdf` job that takes the order in its constructor, give it `$tries = 3`, and dispatch it right next to the email job. (Checkout stays just as fast; both jobs run on the worker.)
 
 ## Real use case
 

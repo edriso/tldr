@@ -4,6 +4,15 @@ tldr: JavaScript runs one thing at a time and a loop decides which callback runs
 category: language
 tech: javascript
 order: 10
+level: 2
+related: [js-promises-vs-async-await, js-closures]
+quiz:
+  - q: "A setTimeout(fn, 0) is queued, then a promise chain queues a thousand .then callbacks. Which runs first, and why?"
+    a: "All the microtasks run first. The loop drains the whole microtask queue before taking the next macrotask, so the timer waits."
+  - q: "A countdown built with setInterval visibly freezes while a long promise chain recalculates totals. What is happening?"
+    a: "The chain keeps the microtask queue busy. Timers are macrotasks and cannot fire until every microtask has drained."
+  - q: "Code after an await reads a shared variable. Can it have changed since the line before the await?"
+    a: "Yes. await splits the function in two; the rest runs later as a microtask, and other code may run in between and change shared state."
 tags: [async, runtime, concurrency]
 links:
   - title: JavaScript execution model (MDN)
@@ -30,21 +39,41 @@ normal ticket. The barista is your single thread. The rails are the task queues.
 - The rule: run one macrotask, then drain the WHOLE microtask queue, then render if needed, then repeat.
 - A microtask that queues more microtasks keeps the loop busy. Timers and rendering wait until the microtask queue is empty.
 
-## Example
+## Worked example
+
+We predict the output order of sync code, a zero delay timer, and a promise callback.
+
+**Step 1: run the synchronous code.** The call stack always finishes the current code before any queue is even looked at.
 
 ```js
 console.log("1: sync");
-
-setTimeout(() => console.log("4: macrotask"), 0);
-
-Promise.resolve().then(() => console.log("3: microtask"));
-
-console.log("2: sync");
-
-// Output: 1, 2, 3, 4
-// Sync code first, then all microtasks, then the timer,
-// even though the timeout was 0 milliseconds.
 ```
+
+**Step 2: schedule a macrotask.** `setTimeout` hands the callback to the host; even at 0 milliseconds it can only join the macrotask queue.
+
+```js
+setTimeout(() => console.log("4: macrotask"), 0);
+```
+
+**Step 3: queue a microtask.** A resolved promise puts its `.then` callback on the microtask queue, which is drained before any macrotask runs.
+
+```js
+Promise.resolve().then(() => console.log("3: microtask"));
+```
+
+**Step 4: finish the sync code, then let the loop take over.** The last sync line runs, then the microtask queue drains, then the timer finally fires.
+
+```js
+console.log("2: sync");
+// Output: 1, 2, 3, 4
+```
+
+## Try it
+
+Inside the microtask from Step 3, queue a second microtask with another
+`Promise.resolve().then(...)` that logs "3b". Predict whether it prints before
+or after the timer. (Before: the loop drains new microtasks too, so the order
+is 1, 2, 3, 3b, 4.)
 
 ## Real use case
 

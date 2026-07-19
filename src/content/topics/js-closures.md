@@ -4,6 +4,15 @@ tldr: A function remembers the variables around it, even after the outer functio
 category: language
 tech: javascript
 order: 11
+level: 1
+related: [js-event-loop, react-useeffect]
+quiz:
+  - q: "You run for (var i = 0; i < 3; i++) setTimeout(() => console.log(i)). What prints, and why?"
+    a: "3, 3, 3. All three callbacks close over the same var binding by reference, and it is 3 by the time they run. let gives each iteration a fresh binding."
+  - q: "const a = createCounter(); const b = createCounter(); you call a.increment() twice. What does b.current() return?"
+    a: "0. Each call to the outer function creates a new scope, so a and b hold completely separate private count variables."
+  - q: "A long-lived event listener closes over a huge parsed file you no longer need. Why does memory stay high?"
+    a: "The closure holds a reference to the object, so the garbage collector cannot reclaim it until the listener is removed."
 tags: [functions, scope, fundamentals]
 links:
   - title: Closures (MDN)
@@ -27,12 +36,20 @@ photo of what they were at packing time.
 - Two calls to the same outer function create two separate scopes. Each returned function gets its own private copy.
 - This is how JavaScript does private state without classes: expose functions, hide the variables they close over.
 
-## Example
+## Worked example
+
+We build a counter with truly private state, no classes involved.
+
+**Step 1: create the private variable.** `count` lives in the outer function's scope, so nothing outside can see or touch it.
 
 ```js
 function createCounter() {
   let count = 0; // private, invisible from outside
+```
 
+**Step 2: return functions that close over it.** Both functions pack `count` into their backpack by reference, so they share the same live variable.
+
+```js
   return {
     increment() {
       count += 1;
@@ -43,13 +60,23 @@ function createCounter() {
     },
   };
 }
+```
 
+**Step 3: call the factory twice and watch the scopes stay separate.** Each call creates a fresh scope, so `a` and `b` carry different backpacks.
+
+```js
 const a = createCounter();
 const b = createCounter();
 a.increment(); // 1
 a.increment(); // 2
 b.current();   // 0, a completely separate backpack
 ```
+
+## Try it
+
+Add a `reset()` function to the returned object that sets the count back to 0,
+then verify that resetting `a` leaves `b` untouched. (Each counter resets
+independently because each closure owns its own `count`.)
 
 ## Real use case
 

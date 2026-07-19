@@ -4,6 +4,15 @@ tldr: Headers that tell browsers and CDNs how long they may reuse a response wit
 category: general
 tech: web
 order: 51
+level: 2
+related: [cors, client-vs-server-state]
+quiz:
+  - q: "You set 'Cache-Control: no-cache' on an API response, yet the browser still stores it. Is that a bug?"
+    a: "No. no-cache means 'store it, but revalidate before every use'. The real off switch is no-store."
+  - q: "After a deploy, some users keep running week-old JavaScript for hours. What header decision caused this?"
+    a: "A long max-age on a file whose URL does not change. Cache 'forever' only fingerprinted files; the hash in the filename is what busts the cache."
+  - q: "A logged-in user briefly sees another customer's account page, served straight from the CDN. What went wrong?"
+    a: "A personalized response was cached in a shared cache. It needed private or no-store, and the Vary header must match how responses differ."
 tags: [cache-control, etag, cdn]
 links:
   - title: MDN HTTP caching guide
@@ -41,24 +50,41 @@ that lets the server say "still fresh, keep using it".
 - One `Cache-Control` header instructs both, and `s-maxage` targets shared caches only.
 - `stale-while-revalidate` lets a cache serve the old copy instantly while it fetches a fresh one in the background: users never wait.
 
-## Example
+## Worked example
+
+We pick cache headers for a store: a fingerprinted JS bundle and a product page.
+
+**Step 1: cache fingerprinted assets "forever".** The hash in the filename changes on every deploy, so the URL itself busts the cache and `immutable` skips even the revalidation check.
 
 ```http
-# Fingerprinted asset: cache "forever", the filename changes on deploy
 GET /assets/app.9f8e2c.js
 Cache-Control: public, max-age=31536000, immutable
+```
 
-# HTML page: always check, but allow serving stale during refresh
+**Step 2: keep the HTML fresh but instant.** Sixty seconds of trust plus `stale-while-revalidate` means a price change lands within a minute while shoppers never wait for the network.
+
+```http
 GET /products/blue-hoodie
 Cache-Control: public, max-age=60, stale-while-revalidate=300
 ETag: "prod-42-v7"
+```
 
-# Later, from the browser:
+**Step 3: revalidate instead of re-downloading.** When the 60 seconds are up, the browser does not fetch the whole page again; it sends back the fingerprint it has.
+
+```http
 GET /products/blue-hoodie
 If-None-Match: "prod-42-v7"
+```
 
+**Step 4: the server confirms with no body.** Nothing changed, so a tiny 304 renews the cached copy and the page stays instant.
+
+```http
 HTTP/1.1 304 Not Modified
 ```
+
+## Try it
+
+Now write the `Cache-Control` header for the checkout page, which shows personal payment data and must never be reused by any cache. (Expected: `no-store`, and certainly not `public`.)
 
 ## Real use case
 

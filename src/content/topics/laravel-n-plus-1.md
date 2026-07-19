@@ -4,6 +4,15 @@ tldr: One query fetches the list, then one more query per row sneaks in, killing
 category: backend
 tech: laravel
 order: 32
+level: 1
+related: [laravel-queues, database-acid]
+quiz:
+  - q: "A page listing 300 invoices was fast in dev with 10 seed rows but takes 4 seconds in production. Debugbar shows 301 near-identical queries. What is happening and what is the fix?"
+    a: "Lazy loading fires one query per invoice for a relation touched in the loop. Eager load it with Invoice::with('customer') so it becomes 2 queries."
+  - q: "After fixing one N+1 you want new ones to fail loudly in development. What do you turn on?"
+    a: "Model::preventLazyLoading() in local dev, so any lazy load throws instead of silently querying."
+  - q: "Does adding with('customer') help a query whose results you never loop over?"
+    a: "No, it is pure overhead. Eager loading only pays off when the relation is actually used."
 tags: [n-plus-1, eloquent, performance]
 links:
   - title: Eloquent, Eager Loading
@@ -32,21 +41,42 @@ code making that same pointless round trip to the database for every row.
 - Eloquent then runs 2 queries: one for orders, one `WHERE id IN (...)` for all customers.
 - Nest relations with dot syntax: `with('customer.address')`.
 
-## Example
+## Worked example
+
+We turn an order list that fires 101 queries into one that always fires 2.
+
+**Step 1: write the naive version and count the queries.** `Order::all()` is 1 query, then each `->customer` inside the loop lazy loads: 100 orders means 100 extra queries.
 
 ```php
-// BAD: 1 query for orders + 1 query per order = N+1
 $orders = Order::all();
 foreach ($orders as $order) {
-    echo $order->customer->name; // each loop iteration hits the DB
-}
-
-// GOOD: exactly 2 queries, no matter how many orders
-$orders = Order::with('customer')->get();
-foreach ($orders as $order) {
-    echo $order->customer->name; // already in memory
+    echo $order->customer->name; // one query per iteration
 }
 ```
+
+**Step 2: declare the relation up front with `with()`.** Eloquent now loads all customers in a single `WHERE id IN (...)` query right after the orders: 2 queries total, at any N.
+
+```php
+$orders = Order::with('customer')->get();
+```
+
+**Step 3: keep the loop exactly as it was.** The relation is already in memory, so the same line no longer touches the database.
+
+```php
+foreach ($orders as $order) {
+    echo $order->customer->name; // no query fires
+}
+```
+
+**Step 4: make regressions loud.** In local development, force any lazy load to throw so the next N+1 is caught before production.
+
+```php
+Model::preventLazyLoading(! app()->isProduction());
+```
+
+## Try it
+
+Extend the same page to also show each order's item count: add `items` to the `with()` call and print `$order->items->count()` in the loop. (Still a flat 3 queries, no matter how many orders.)
 
 ## How to spot it
 

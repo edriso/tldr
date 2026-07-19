@@ -4,6 +4,15 @@ tldr: A transaction makes several database steps behave as one step that fully h
 category: backend
 tech: database
 order: 34
+level: 2
+related: [laravel-queues, idempotency]
+quiz:
+  - q: "Power dies right after 'subtract 100 from account A' but before 'add 100 to account B'. With a transaction, what does the database look like on restart?"
+    a: "As if the transfer never started. Atomicity plus durability guarantee the uncommitted subtract is rolled back."
+  - q: "A checkout calls the payment provider's API inside the transaction, and under load other queries start timing out. Why?"
+    a: "The transaction holds row locks while waiting on the network, blocking other writers, and the API call cannot be rolled back anyway. Do external calls outside the transaction."
+  - q: "Two buyers click 'buy' on the last unit at the same moment. Which ACID property saves you, and how?"
+    a: "Isolation: the second transaction waits for the first to commit, then sees stock at zero and fails cleanly instead of overselling."
 tags: [transactions, acid, data-integrity]
 links:
   - title: ACID (Wikipedia)
@@ -38,25 +47,42 @@ ACID stands for Atomicity, Consistency, Isolation, Durability.
 - Read-then-write logic where the read must still be true at write time (check stock, then reserve it).
 - Not needed for a single-row insert or update: that is already atomic on its own.
 
-## Example
+## Worked example
+
+We make a 100-unit transfer between two accounts impossible to half-finish.
+
+**Step 1: open the envelope.** `BEGIN` starts the transaction; nothing after it is visible to others or permanent yet.
 
 ```sql
 BEGIN;
-
-UPDATE accounts SET balance = balance - 100 WHERE id = 1;
-UPDATE accounts SET balance = balance + 100 WHERE id = 2;
-
--- if anything failed above, run ROLLBACK instead
-COMMIT;
 ```
 
+**Step 2: do both writes inside it.** If the power dies between these two lines, no one ever sees the in-between state.
+
+```sql
+UPDATE accounts SET balance = balance - 100 WHERE id = 1;
+UPDATE accounts SET balance = balance + 100 WHERE id = 2;
+```
+
+**Step 3: seal or shred.** `COMMIT` makes both writes permanent at once; on any failure you run `ROLLBACK` and the database looks untouched.
+
+```sql
+COMMIT;
+-- on any error above: ROLLBACK;
+```
+
+**Step 4: let the framework manage the envelope.** In Laravel, `DB::transaction` commits on success and rolls back automatically when the closure throws.
+
 ```php
-// Same idea in Laravel: exception inside = automatic rollback
-DB::transaction(function () use ($order) {
+DB::transaction(function () use ($order, $ids) {
     $order->items()->createMany($order->cart);
     Product::whereIn('id', $ids)->decrement('stock');
 });
 ```
+
+## Try it
+
+Wrap a two-step checkout of your own in `DB::transaction`: insert a sale row, then decrement stock, and throw an exception between the two steps. Then check the table. (The sale row is gone: the rollback erased it.)
 
 ## Real use case
 

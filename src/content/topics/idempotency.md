@@ -4,6 +4,15 @@ tldr: Doing the same request twice must have the same effect as doing it once.
 category: general
 tech: web
 order: 54
+level: 2
+related: [shopify-webhooks, laravel-queues, database-acid]
+quiz:
+  - q: "A client generates a fresh Idempotency-Key on every automatic retry, yet duplicate charges still appear. Why?"
+    a: "The key must identify the logical operation and be reused across retries. A fresh key per retry makes every retry look like a brand new operation."
+  - q: "Two identical requests arrive in the same millisecond and both create orders, even though the handler checks the key first. What is missing?"
+    a: "A unique constraint or lock on the key. Check-then-write leaves a race window where both requests pass the check before either has saved."
+  - q: "Why is 'PUT /cart/42' safe to retry blindly while 'POST /orders' is not?"
+    a: "PUT sets the full state, so repeats do not stack. POST means 'create another one', so it needs an idempotency key to be retried safely."
 tags: [retries, payments, http-methods]
 links:
   - title: MDN glossary, Idempotent
@@ -36,28 +45,47 @@ mash it.
 - HTTP methods carry promises: GET, PUT, and DELETE are idempotent by contract (`PUT /cart/42` sets the full state, so repeats do not stack). POST is not: `POST /orders` means "create another one".
 - So either use naturally idempotent semantics (PUT with a client-chosen ID) or make POST safe with a key.
 
-## Example
+## Worked example
+
+We make `POST /api/orders` safe to retry with an idempotency key.
+
+**Step 1: demand a key.** Without a client-chosen ID, the server has no way to tell a retry from a genuinely new order.
 
 ```js
 app.post("/api/orders", async (req, res) => {
   const key = req.get("Idempotency-Key");
   if (!key) return res.status(400).json({ error: "key required" });
+```
 
+**Step 2: short-circuit repeats.** If we have seen this key, the work is already done, so we return the stored result instead of charging again.
+
+```js
   const existing = await db.idempotency.find(key);
   if (existing) return res.status(200).json(existing.response);
+```
 
+**Step 3: do the work once and remember it.** The result is saved under the key, and a unique constraint on the key column closes the race between concurrent duplicates.
+
+```js
   const order = await createOrderAndCharge(req.body); // the real work
   await db.idempotency.save(key, { response: order });
   res.status(201).json(order);
 });
+```
 
-// Client: one key per checkout attempt, reused on retry
+**Step 4: the client keeps one key per attempt.** It is generated once at checkout and reused on every retry of that same attempt, never regenerated.
+
+```js
 fetch("/api/orders", {
   method: "POST",
   headers: { "Idempotency-Key": crypto.randomUUID() },
   body: JSON.stringify(cart),
 });
 ```
+
+## Try it
+
+Apply the same pattern to a webhook handler: use the delivery's webhook ID header as the key instead of a client UUID. (A redelivered event should return 200 without doing the work a second time.)
 
 ## Real use case
 

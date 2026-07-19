@@ -4,6 +4,15 @@ tldr: "Generics are type variables: write the logic once, let the caller fill in
 category: language
 tech: typescript
 order: 13
+level: 2
+related: [ts-utility-types, nest-dependency-injection]
+quiz:
+  - q: "A teammate replaces <T> with any in a fetch wrapper because 'it compiles either way'. What do the call sites lose?"
+    a: "The link between input and output types. Every response becomes unchecked, so typos and renamed fields fail at runtime instead of compile time."
+  - q: "Inside function log<T>(item: T) you call item.name and get 'property name does not exist on type T'. What is the fix?"
+    a: "Add a constraint: <T extends { name: string }>. Inside the function, T only guarantees what the constraint promises."
+  - q: "You call indexById([{ id: 'l1', title: 'Intro' }]) without writing a type argument. How does T get its value?"
+    a: "Inference. The compiler reads the argument's type and fills in T automatically; explicit type arguments are rarely needed."
 tags: [types, reusability, type-safety]
 links:
   - title: Generics (TypeScript Handbook)
@@ -28,21 +37,38 @@ promise that it is probably a cookie.
 - `K extends keyof T` ties one parameter to the keys of another, so `get(obj, key)` only accepts real keys.
 - Interfaces and classes take type parameters too: `interface ApiResponse<T> { data: T; error?: string }`.
 
-## Example
+## Worked example
+
+We build one indexing function that works for any type with an `id`.
+
+**Step 1: name the shape the logic needs.** The function will read `item.id`, so the constraint must guarantee an `id` exists.
 
 ```ts
 interface HasId {
   id: string;
 }
+```
 
+**Step 2: declare the generic with the constraint.** `T extends HasId` means "any type, as long as it has an id", and the return type keeps the full `T`.
+
+```ts
 function indexById<T extends HasId>(items: T[]): Map<string, T> {
+```
+
+**Step 3: implement using only what the constraint guarantees.** Inside the body, `T` is opaque; `item.id` is legal because `HasId` promises it.
+
+```ts
   const map = new Map<string, T>();
   for (const item of items) {
     map.set(item.id, item);
   }
   return map;
 }
+```
 
+**Step 4: use it with two unrelated types.** Write `T` explicitly or let inference pick it; either way the values stay fully typed.
+
+```ts
 type Product = { id: string; title: string; price: number };
 type Lesson = { id: string; title: string; durationMin: number };
 
@@ -52,6 +78,12 @@ const lessons = indexById([{ id: "l1", title: "Intro", durationMin: 7 }]);
 products.get("p1")?.price;      // number, fully typed
 lessons.get("l1")?.durationMin; // inference picked Lesson for T
 ```
+
+## Try it
+
+Write `pickIds<T extends HasId>(items: T[]): string[]` and call it with both
+`Product` and `Lesson` arrays without writing a type argument. (Inference fills
+in `T` at each call site and the return is always `string[]`.)
 
 ## Real use case
 

@@ -4,7 +4,16 @@ tldr: Five rules that keep object-oriented code easy to change without breaking 
 category: general
 tech: design
 order: 50
+level: 2
 tags: [architecture, oop, clean-code]
+related: [nest-dependency-injection, idempotency]
+quiz:
+  - q: "You need to edit the checkout class every time a new payment method is added. Which principle is broken?"
+    a: "Open/Closed. The class should be open to extension (new gateway classes) but closed to modification."
+  - q: "What does the D in SOLID tell you to depend on?"
+    a: "Abstractions (interfaces), not concrete classes. High-level code should not know which exact implementation it uses."
+  - q: "A class has one method but changes for three different business reasons. Does it follow Single Responsibility?"
+    a: "No. Single Responsibility is about one reason to change, not one method. Three reasons means three responsibilities."
 links:
   - title: SOLID on Wikipedia
     url: https://en.wikipedia.org/wiki/SOLID
@@ -26,23 +35,35 @@ SOLID makes your code work like that restaurant.
 - **I is Interface Segregation.** Many small interfaces beat one giant one. Do not force classes to implement methods they never use.
 - **D is Dependency Inversion.** Depend on abstractions (interfaces), not on concrete classes.
 
-## Example
+## Worked example
 
-A payment service that follows O and D. To support a new payment provider you
-add a class. You never touch the checkout code.
+Build a checkout that survives new payment methods. One small step at a time.
+
+**Step 1: name the job in one sentence.** "Checkout charges the customer."
+Charging is a separate job from checking out, so it deserves its own type (S).
+
+**Step 2: describe that job as an interface, not a class (D).**
 
 ```ts
 interface PaymentGateway {
   charge(amountCents: number): Promise<void>
 }
+```
 
+**Step 3: write one concrete implementation of it.**
+
+```ts
 class StripeGateway implements PaymentGateway {
   async charge(amountCents: number) {
     /* call Stripe */
   }
 }
+```
 
-// Checkout depends on the interface, not on Stripe.
+**Step 4: make Checkout ask for the interface.** It never mentions Stripe, so
+new gateways never touch it (O).
+
+```ts
 class Checkout {
   constructor(private gateway: PaymentGateway) {}
 
@@ -51,6 +72,16 @@ class Checkout {
   }
 }
 ```
+
+**Step 5: extend by adding, not editing.** PayPal support is one new class,
+`PayPalGateway implements PaymentGateway`, plus one line of wiring. Any gateway
+must behave like a gateway: `charge` either charges or throws, never silently
+skips (L).
+
+## Try it
+
+Add a `CashOnDeliveryGateway` yourself: which of the five steps do you repeat,
+and which files stay untouched? (Only step 3 repeats. Checkout stays closed.)
 
 ## Real use case
 

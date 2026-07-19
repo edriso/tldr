@@ -4,6 +4,15 @@ tldr: "Built-in type transformers: reshape existing types instead of writing nea
 category: language
 tech: typescript
 order: 14
+level: 2
+related: [ts-generics, client-vs-server-state]
+quiz:
+  - q: "A PATCH endpoint types its body as Partial<Product> and a client sends an empty object. Does it compile, and what should you do?"
+    a: "It compiles; every field is optional, so an empty object is valid. Validate at runtime that at least one field is present."
+  - q: "You write Omit<Product, 'pricee'> with a typo in the key. What does the compiler say?"
+    a: "Nothing by default. Omit does not check the keys against T, so the typo compiles and nothing is actually omitted."
+  - q: "Marketing adds salePrice to Product. Which derived types update automatically: Omit<Product, 'id'>, Partial<Product>, or Pick<Product, 'id' | 'title'>?"
+    a: "The Omit and Partial types, because they derive from the whole type. The Pick lists explicit keys, so it stays unchanged until you add the new key."
 tags: [types, utility-types, dry]
 links:
   - title: Utility Types (TypeScript Handbook)
@@ -28,7 +37,11 @@ building changes, every key updates itself.
 - `ReturnType<T>`: extract what a function returns. Lets types follow the code instead of being retyped.
 - They compose: `Partial<Pick<T, "a" | "b">>` means "optionally, just these two fields".
 
-## Example
+## Worked example
+
+We derive every payload shape a product feature needs from one master type.
+
+**Step 1: define the single source of truth.** Every other shape will be cut from this one.
 
 ```ts
 type Product = {
@@ -38,24 +51,42 @@ type Product = {
   stock: number;
   description: string;
 };
+```
 
-// Creating: the server assigns the id.
+**Step 2: derive the create payload with Omit.** The server assigns the id, so the client must not send one.
+
+```ts
 type NewProduct = Omit<Product, "id">;
+```
 
-// Editing: send only the fields that changed.
+**Step 3: compose Partial and Omit for edits.** An edit sends only changed fields, and still never the id.
+
+```ts
 type ProductPatch = Partial<Omit<Product, "id">>;
+```
 
-// Listing: a card needs three fields, not the whole record.
+**Step 4: cut slim views with Pick and Record.** A list card needs three fields, and a cache maps ids to full products.
+
+```ts
 type ProductCard = Pick<Product, "id" | "title" | "price">;
-
-// Cache: products by id.
 const cache: Record<string, Product> = {};
+```
 
+**Step 5: let ReturnType follow the code.** No hand-written interface for the summary; the type tracks the function.
+
+```ts
 function buildCheckoutSummary(items: ProductCard[]) {
   return { items, total: items.reduce((sum, p) => sum + p.price, 0) };
 }
 type CheckoutSummary = ReturnType<typeof buildCheckoutSummary>;
 ```
+
+## Try it
+
+Derive a `CartLine` type on your own: pick `id` and `price` from `Product`,
+add a `quantity: number` field with an intersection, and type the cart as
+`Record<string, CartLine>`. (Renaming `price` on `Product` should now flag
+every cart usage.)
 
 ## Real use case
 

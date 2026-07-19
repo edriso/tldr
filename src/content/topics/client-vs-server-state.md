@@ -4,6 +4,15 @@ tldr: UI state is yours; server data is a cache of someone else's truth, so mana
 category: frontend
 tech: react
 order: 23
+level: 2
+related: [react-useeffect, http-caching, idempotency]
+quiz:
+  - q: "The header cart badge shows 3 but the cart page shows 4. Both fetch the same endpoint. What design mistake usually causes this?"
+    a: "Each component fetched the cart into its own useState, so two private copies drifted apart. Both should read one shared cache key."
+  - q: "After 'add to cart' succeeds, the screen still shows the old cart even though the mutation worked. What was forgotten?"
+    a: "Invalidation. The mutation must invalidate the cart's query key so every reader refetches the fresh copy."
+  - q: "Should the 'mini-cart drawer is open' flag live in the query cache next to the cart data?"
+    a: "No. It is client state you own and no server can change it behind your back, so plain useState is the right home."
 tags: [data-fetching, caching, server-state]
 links:
   - title: TanStack Query Overview
@@ -37,25 +46,46 @@ always the photocopy, never the book.
 - You end up hand-rolling loading flags, error flags, retries, and deduplication in every component.
 - Query libraries (TanStack Query is one example) exist to own exactly this. The model: cache by key, serve the stale copy instantly, revalidate in the background (stale-while-revalidate), and let mutations invalidate the keys they touched.
 
-## Example
+## Worked example
+
+We build a cart button that reads and writes through a query cache instead of private state.
+
+**Step 1: read the copy through a cache key.** Every component that queries `["cart"]` shares one fetch and one copy, so views cannot drift apart.
 
 ```tsx
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-
 export function Cart() {
-  const qc = useQueryClient();
   const { data: cart, isPending } = useQuery({
     queryKey: ["cart"],
     queryFn: () => fetch("/api/cart").then((r) => r.json()),
   });
+```
+
+**Step 2: write through a mutation.** The POST changes the server's truth, which means our cached copy is about to be wrong.
+
+```tsx
+  const qc = useQueryClient();
   const addItem = useMutation({
     mutationFn: (id: string) => fetch(`/api/cart/${id}`, { method: "POST" }),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["cart"] }), // copy is stale, refetch
+```
+
+**Step 3: invalidate on success.** Marking `["cart"]` stale makes every reader of that key refetch, so the whole app agrees again.
+
+```tsx
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["cart"] }),
   });
+```
+
+**Step 4: render from the cached copy.** The query gives loading state for free; no hand-rolled flags.
+
+```tsx
   if (isPending) return <p>Loading...</p>;
   return <button onClick={() => addItem.mutate("sku-1")}>Add ({cart.items.length})</button>;
 }
 ```
+
+## Try it
+
+Add a `removeItem` mutation that sends a DELETE to `/api/cart/${id}` and invalidates the same `["cart"]` key on success. (Expected: the header badge and the cart page both update from the single refetch.)
 
 ## Real use case
 

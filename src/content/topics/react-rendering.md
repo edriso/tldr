@@ -4,6 +4,15 @@ tldr: A render is React calling your function again; it is cheap and does not me
 category: frontend
 tech: react
 order: 20
+level: 1
+related: [react-keys-and-lists, react-useeffect]
+quiz:
+  - q: "A page with a 60-item product grid re-renders on every cart click, yet the app feels fast. Should you wrap every card in memo?"
+    a: "No. A re-render that changes nothing skips the DOM and is cheap. Add memo only where profiling shows the render itself is slow."
+  - q: "You wrapped Row in memo but it still re-renders whenever its parent does. What is the usual cause?"
+    a: "A prop gets a fresh reference each render, such as an inline arrow function or object literal. Stabilize it with useCallback or useMemo."
+  - q: "A form keeps stale input after the app switches to a different user profile. How can a key fix it without an effect?"
+    a: "Changing the key changes the component identity, so React unmounts the old instance and mounts a fresh one with clean state."
 tags: [rendering, performance, memoization]
 links:
   - title: Render and Commit
@@ -38,19 +47,34 @@ are different.
 - These are targeted fixes for proven hot spots, not defaults for every component.
 - A `key` gives a component its identity. Changing the key destroys it and remounts it with fresh state.
 
-## Example
+## Worked example
+
+We build a counter whose child button stops re-rendering on every click.
+
+**Step 1: start with a parent that re-renders often.** Every click sets state, so `List` renders again, and by default so does every child.
 
 ```tsx
-import { memo, useCallback, useState } from "react";
+export function List() {
+  const [count, setCount] = useState(0);
+```
 
+**Step 2: wrap the child in `memo`.** Now React skips its render when the props are shallow-equal to last time.
+
+```tsx
 const Row = memo(function Row({ label, onPick }: { label: string; onPick: () => void }) {
   return <button onClick={onPick}>{label}</button>;
 });
+```
 
-export function List() {
-  const [count, setCount] = useState(0);
-  // Stable reference: Row's props do not change, so memo skips it.
+**Step 3: stabilize the function prop.** An inline arrow would be a new reference each render and would defeat `memo`, so cache it with `useCallback`.
+
+```tsx
   const pick = useCallback(() => console.log("picked"), []);
+```
+
+**Step 4: wire it together.** Clicking `+1` re-renders `List`, but `Row` sees the same `label` and the same `pick` reference, so it skips.
+
+```tsx
   return (
     <>
       <p>Clicks: {count}</p>
@@ -60,6 +84,10 @@ export function List() {
   );
 }
 ```
+
+## Try it
+
+Add a second `Row` that receives an inline arrow, `onPick={() => console.log("hi")}`, and log inside `Row` to compare. (Expected: on every click the inline-prop row renders again while the memoized one stays skipped.)
 
 ## Real use case
 

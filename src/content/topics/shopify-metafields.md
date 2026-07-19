@@ -4,6 +4,15 @@ tldr: Extra custom fields you bolt onto products, orders, or customers, stored i
 category: ecommerce
 tech: shopify
 order: 40
+level: 2
+related: [shopify-webhooks, database-acid]
+quiz:
+  - q: "Your Liquid template prints something like 'ProductMetafieldDrop' instead of the care guide text. What went wrong?"
+    a: "The template output the metafield object itself. Read its .value (or pipe it through metafield_tag) to get the content."
+  - q: "A headless storefront queries a metafield and gets null, even though the value clearly exists in the admin. Why?"
+    a: "The Storefront API hides metafields until they are explicitly exposed. Expose the definition, then the query returns the value."
+  - q: "Merchandising wants reports of sales grouped by fabric type across all orders. Metafields or your own database?"
+    a: "Your own database. Metafields are per-resource key-value notes, not a queryable store; search and reporting on them does not scale."
 tags: [custom-data, liquid, admin-api]
 links:
   - title: Metafields and metaobjects overview
@@ -35,24 +44,44 @@ product goes.
 - In the Admin GraphQL API: query `metafield(namespace:, key:)` on the resource.
 - In the Storefront API: metafields must be explicitly exposed before they are visible.
 
-## Example
+## Worked example
+
+We render a care guide and a wash temperature on a product page, both stored as metafields.
+
+**Step 1: grab the metafield object.** Reading `product.metafields.custom.care_guide` returns an object, not the text itself, so assign it first.
 
 ```liquid
-{% comment %} Show a care guide on the product page {% endcomment %}
 {% assign care = product.metafields.custom.care_guide %}
+```
 
+**Step 2: guard against missing values.** Not every product has this note attached, so the block only renders when it exists.
+
+```liquid
 {% if care != blank %}
+```
+
+**Step 3: render the value with the right filter.** `metafield_tag` wraps rich text in correct HTML; printing `{{ care }}` alone would show the object.
+
+```liquid
   <div class="care-guide">
     <h3>Care instructions</h3>
     {{ care.value | metafield_tag }}
   </div>
 {% endif %}
+```
 
+**Step 4: read a simple typed value directly.** For a scalar like an integer, reach straight for `.value` and print it.
+
+```liquid
 {% assign temp = product.metafields.custom.wash_temp.value %}
 {% if temp %}
   <p>Max wash temperature: {{ temp }}&deg;C</p>
 {% endif %}
 ```
+
+## Try it
+
+Add a third metafield, `custom.fabric` (single line text), and render it under the care guide with the same guard. (A product without the value should show nothing, not an empty tag.)
 
 ## Real use case
 

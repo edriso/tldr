@@ -4,6 +4,15 @@ tldr: Keys tell React which item is which across renders; index keys lie the mom
 category: frontend
 tech: react
 order: 22
+level: 1
+related: [react-rendering, react-useeffect]
+quiz:
+  - q: "A shopper types a gift note on cart item two, deletes item one, and the note now sits under the wrong product. What went wrong?"
+    a: "Index keys. Identity followed the position, so item two inherited item one's component instance. Key by a stable id instead."
+  - q: "A teammate silences the key warning with key={crypto.randomUUID()} inside the map. What happens on the next render?"
+    a: "Every key changes, so React remounts every row. Input text, focus, and animations are wiped on each render."
+  - q: "When is it actually safe to use the array index as a key?"
+    a: "Only when the list never reorders, inserts, or deletes, and the rows hold no state. Otherwise position and identity drift apart."
 tags: [keys, lists, state]
 links:
   - title: Rendering Lists
@@ -37,11 +46,19 @@ keep handing them seat 3's notes. Index keys are seat numbers. Stable IDs
 - Index keys are only safe when the list never reorders, inserts, or deletes, and rows hold no state.
 - Never generate keys at render time (`Math.random()`, `crypto.randomUUID()` inline). That remounts every row on every render.
 
-## Example
+## Worked example
+
+We build a cart list whose per-row state survives deletes and reorders.
+
+**Step 1: start from data that carries a stable id.** The id comes from the data itself, not from the render, so it never changes between renders.
 
 ```tsx
 type CartItem = { id: string; name: string };
+```
 
+**Step 2: map the items and choose the key.** `key={item.id}` ties each row's identity to the product, not to its position in the array.
+
+```tsx
 export function Cart({ items, onRemove }: {
   items: CartItem[];
   onRemove: (id: string) => void;
@@ -49,9 +66,19 @@ export function Cart({ items, onRemove }: {
   return (
     <ul>
       {items.map((item) => (
-        <li key={item.id}> {/* stable id, not the array index */}
+        <li key={item.id}>
+```
+
+**Step 3: put stateful UI inside the row.** The gift note input holds uncontrolled text. Because identity follows the id, that text moves with the product when the list changes.
+
+```tsx
           {item.name}
           <input placeholder="Gift note" />
+```
+
+**Step 4: complete the row with a remove action.** Deleting an item destroys exactly that row's instance; the others keep their state.
+
+```tsx
           <button onClick={() => onRemove(item.id)}>Remove</button>
         </li>
       ))}
@@ -59,6 +86,10 @@ export function Cart({ items, onRemove }: {
   );
 }
 ```
+
+## Try it
+
+Change the key to the array index, type a gift note in row two, then remove row one and watch where the note lands. Switch back to `item.id` and repeat. (Expected: with index keys the note jumps to the wrong product; with ids it stays put.)
 
 ## Real use case
 

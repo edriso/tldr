@@ -4,6 +4,15 @@ tldr: Every request runs through middleware, guards, interceptors, pipes, handle
 category: backend
 tech: nestjs
 order: 31
+level: 2
+related: [nest-dependency-injection, jwt-vs-sessions]
+quiz:
+  - q: "Your logging interceptor never records requests that a guard rejected. Is the interceptor broken?"
+    a: "No. Guards run before interceptors, so when a guard throws, the 'before' interceptor never ran. The error goes straight to the exception filters."
+  - q: "You need to measure how long each handler takes, from request in to response out. Which lifecycle step fits, and why?"
+    a: "An interceptor: it is the only step that wraps the handler, so it sees the request before and the response after."
+  - q: "A teammate does role checks in middleware and cannot read the route's @Roles() metadata. What should they use instead?"
+    a: "A guard. Middleware runs before route context exists; guards get the ExecutionContext with the handler and its metadata."
 tags: [request-lifecycle, guards, interceptors]
 links:
   - title: Request lifecycle FAQ
@@ -40,22 +49,40 @@ M-G-I-P-H: "My Guard Inspects Packages Here."
 Middleware, Guards, Interceptors, Pipes, Handler.
 Then interceptors again on the way out, and filters catch what falls.
 
-## Example
+## Worked example
+
+We build one `POST /orders` route and attach each lifecycle step in the order it fires.
+
+**Step 1: guard the route.** Auth is a yes-or-no decision, so it goes in a guard (step 2 of the chain), rejecting strangers before any real work.
 
 ```ts
-@Controller('orders')
-export class OrdersController {
-  @Post()
-  @UseGuards(AuthGuard)              // 2. may you enter?
-  @UseInterceptors(LoggingInterceptor) // 3 and 6. wraps the handler
-  @UseFilters(HttpExceptionFilter)   // 7. catches errors
-  create(
-    @Body(ValidationPipe) dto: CreateOrderDto, // 4. validate input
-  ) {
-    return this.orders.create(dto); // 5. the handler
-  }
+@Post()
+@UseGuards(AuthGuard)
+```
+
+**Step 2: wrap the handler with an interceptor.** It runs before the handler (start a timer) and after it (log the duration), the only step that sees both sides.
+
+```ts
+@UseInterceptors(LoggingInterceptor)
+```
+
+**Step 3: validate the body with a pipe.** By now the request is authorized, so spending work on validation is safe. The pipe turns raw JSON into a checked DTO (Data Transfer Object).
+
+```ts
+create(@Body(ValidationPipe) dto: CreateOrderDto) {
+  return this.orders.create(dto); // the handler, step 5
 }
 ```
+
+**Step 4: add a safety net for errors.** A filter catches anything thrown along the chain and shapes the HTTP reply. Remember: on errors, the "after" interceptor is skipped.
+
+```ts
+@UseFilters(HttpExceptionFilter)
+```
+
+## Try it
+
+Add a `@Get(':id')` route to the same controller on your own: guard it with `AuthGuard` and parse the parameter with `@Param('id', ParseIntPipe)`. (A bad token is rejected before the pipe ever parses the id, because guards run first.)
 
 ## Real use case
 
