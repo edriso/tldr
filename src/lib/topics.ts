@@ -36,6 +36,21 @@ export const CATEGORIES = {
 
 export type Category = keyof typeof CATEGORIES
 
+/** Learning levels, from "every junior must know this" to "senior depth". */
+export const LEVELS = {
+  1: { label: 'foundation', chip: 'bg-lime-100 text-lime-800 dark:bg-lime-950 dark:text-lime-300' },
+  2: { label: 'core', chip: 'bg-cyan-100 text-cyan-800 dark:bg-cyan-950 dark:text-cyan-300' },
+  3: { label: 'advanced', chip: 'bg-fuchsia-100 text-fuchsia-800 dark:bg-fuchsia-950 dark:text-fuchsia-300' },
+} as const
+
+export type Level = keyof typeof LEVELS
+
+/** One active-recall question shown in the "Check yourself" section. */
+export type QuizItem = {
+  q: string
+  a: string
+}
+
 /** An external link shown in the "Learn more" section of a topic. */
 export type TopicLink = {
   title: string
@@ -54,7 +69,13 @@ export type TopicMeta = {
   tech: string
   /** Lower numbers show first inside their category. */
   order: number
+  /** 1 = foundation, 2 = core, 3 = advanced. Defaults to 2 (core). */
+  level?: Level
   tags: string[]
+  /** Slugs of related topics, shown as "Related" chips (the brain learns by linking). */
+  related?: string[]
+  /** 2-3 active-recall questions with hidden answers ("Check yourself"). */
+  quiz?: QuizItem[]
   links?: TopicLink[]
 }
 
@@ -89,7 +110,8 @@ function parseTopic(path: string, raw: string): Topic {
 
 export const topics: Topic[] = Object.entries(files)
   .map(([path, raw]) => parseTopic(path, raw))
-  .sort((a, b) => a.order - b.order)
+  // Foundations first, so reading a category top to bottom is a learning path.
+  .sort((a, b) => (a.level ?? 2) - (b.level ?? 2) || a.order - b.order)
 
 export function getTopic(slug: string): Topic | undefined {
   return topics.find((topic) => topic.slug === slug)

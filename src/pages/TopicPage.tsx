@@ -1,8 +1,10 @@
-import { ArrowLeft, BookOpen } from 'lucide-react'
+import { ArrowLeft, BookOpen, Brain } from 'lucide-react'
 import { Link, useParams } from 'react-router'
 import { LinkList } from '../components/LinkList'
 import { Markdown } from '../components/Markdown'
-import { CATEGORIES, getTopic } from '../lib/topics'
+import { Quiz } from '../components/Quiz'
+import { RelatedTopics } from '../components/RelatedTopics'
+import { CATEGORIES, LEVELS, getTopic } from '../lib/topics'
 import { NotFound } from './NotFound'
 
 export function TopicPage() {
@@ -14,6 +16,7 @@ export function TopicPage() {
   }
 
   const category = CATEGORIES[topic.category]
+  const level = LEVELS[topic.level ?? 2]
 
   return (
     <div className="mx-auto max-w-3xl">
@@ -31,6 +34,11 @@ export function TopicPage() {
             className={`rounded-full px-2.5 py-0.5 font-mono text-xs font-medium ${category.chip}`}
           >
             {topic.tech}
+          </span>
+          <span
+            className={`rounded-full px-2.5 py-0.5 font-mono text-xs font-medium ${level.chip}`}
+          >
+            {level.label}
           </span>
           {topic.tags.map((tag) => (
             <span
@@ -57,6 +65,24 @@ export function TopicPage() {
       </div>
 
       <Markdown>{topic.content}</Markdown>
+
+      {topic.quiz && topic.quiz.length > 0 && (
+        <section className="mt-10">
+          <h2 className="flex items-center gap-2 font-mono text-lg font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
+            <Brain size={18} className="text-accent" />
+            Check yourself
+          </h2>
+          <div className="mt-4">
+            <Quiz items={topic.quiz} />
+          </div>
+        </section>
+      )}
+
+      {topic.related && topic.related.length > 0 && (
+        <section className="mt-10">
+          <RelatedTopics slugs={topic.related} />
+        </section>
+      )}
 
       {topic.links && topic.links.length > 0 && (
         <section className="mt-10">

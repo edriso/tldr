@@ -1,8 +1,9 @@
 import { Link } from 'react-router'
-import { CATEGORIES, type Topic } from '../lib/topics'
+import { CATEGORIES, LEVELS, type Topic } from '../lib/topics'
 
 export function TopicCard({ topic }: { topic: Topic }) {
   const category = CATEGORIES[topic.category]
+  const level = LEVELS[topic.level ?? 2]
 
   return (
     <Link
@@ -15,10 +16,17 @@ export function TopicCard({ topic }: { topic: Topic }) {
         <h3 className="font-semibold text-zinc-900 group-hover:text-accent-strong dark:text-zinc-50 dark:group-hover:text-accent">
           {topic.title}
         </h3>
-        <span
-          className={`shrink-0 rounded-full px-2 py-0.5 font-mono text-[11px] font-medium ${category.chip}`}
-        >
-          {topic.tech}
+        <span className="flex shrink-0 gap-1">
+          <span
+            className={`rounded-full px-2 py-0.5 font-mono text-[11px] font-medium ${category.chip}`}
+          >
+            {topic.tech}
+          </span>
+          <span
+            className={`rounded-full px-2 py-0.5 font-mono text-[11px] font-medium ${level.chip}`}
+          >
+            {level.label}
+          </span>
         </span>
       </div>
       <p className="text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">{topic.tldr}</p>
