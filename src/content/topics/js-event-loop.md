@@ -3,7 +3,7 @@ title: The Event Loop
 tldr: JavaScript runs one thing at a time and a loop decides which callback runs next.
 category: language
 tech: javascript
-order: 10
+order: 18
 level: 2
 related: [js-promises-vs-async-await, js-closures]
 quiz:

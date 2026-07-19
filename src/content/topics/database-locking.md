@@ -3,7 +3,7 @@ title: "Locking: Optimistic vs Pessimistic"
 tldr: Two writers on one row will overwrite each other. Pessimistic locking blocks the second writer up front; optimistic locking lets both try and rejects the stale one.
 category: database
 tech: database
-order: 64
+order: 56
 level: 3
 tags: [sql, locking, concurrency, transactions]
 related: [database-acid, idempotency, laravel-queues]

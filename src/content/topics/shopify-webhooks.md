@@ -3,7 +3,7 @@ title: Shopify Webhooks
 tldr: Shopify calls your server when something happens, so you never have to poll for changes.
 category: ecommerce
 tech: shopify
-order: 41
+order: 66
 level: 2
 related: [idempotency, laravel-queues, shopify-metafields]
 quiz:

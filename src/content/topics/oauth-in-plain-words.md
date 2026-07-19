@@ -3,7 +3,7 @@ title: OAuth in Plain Words
 tldr: A standard way to let an app act on your account without ever giving it your password.
 category: general
 tech: security
-order: 59
+order: 77
 level: 2
 tags: [oauth, oidc, authentication, tokens]
 related: [jwt-vs-sessions, security-owasp-basics, cors]

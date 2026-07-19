@@ -3,7 +3,7 @@ title: ACID Transactions
 tldr: A transaction makes several database steps behave as one step that fully happens or never happened.
 category: database
 tech: database
-order: 65
+order: 53
 level: 2
 related: [laravel-queues, idempotency]
 quiz:

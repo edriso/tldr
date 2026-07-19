@@ -3,7 +3,7 @@ title: Client State vs Server State
 tldr: UI state is yours; server data is a cache of someone else's truth, so manage it like a cache.
 category: frontend
 tech: react
-order: 23
+order: 34
 level: 2
 related: [react-useeffect, http-caching, idempotency]
 quiz:

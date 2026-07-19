@@ -3,7 +3,7 @@ title: Narrowing & Type Guards
 tldr: "TypeScript reads your control flow to shrink a union down to one exact type."
 category: language
 tech: typescript
-order: 18
+order: 21
 level: 2
 tags: [types, unions, type-guards]
 related: [ts-generics, ts-utility-types]

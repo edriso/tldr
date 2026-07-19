@@ -3,7 +3,7 @@ title: Code Splitting & Lazy Loading
 tldr: Ship one small bundle first and load the rest on demand. Dynamic import() cuts the bundle, React.lazy plus Suspense renders the pieces.
 category: frontend
 tech: react
-order: 26
+order: 35
 level: 2
 tags: [performance, bundling, lazy-loading]
 related: [react-rendering, http-caching, js-promises-vs-async-await]

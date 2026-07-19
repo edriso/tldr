@@ -3,7 +3,7 @@ title: Accessibility Basics
 tldr: Semantic HTML does most accessibility work for free. Keep everything reachable by keyboard, and reach for ARIA only when HTML cannot say it.
 category: frontend
 tech: web
-order: 27
+order: 36
 level: 2
 tags: [a11y, html, semantics]
 related: [react-controlled-inputs, testing-pyramid]

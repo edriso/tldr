@@ -3,7 +3,7 @@ title: Cascade & Specificity
 tldr: When two CSS rules fight over the same property, origin, specificity, and source order decide the winner.
 category: frontend
 tech: css
-order: 29
+order: 25
 level: 1
 tags: [css, cascade, specificity, debugging]
 related: [css-layout, responsive-design]

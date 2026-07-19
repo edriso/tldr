@@ -3,7 +3,7 @@ title: "Pagination: Offset vs Cursor"
 tldr: OFFSET counts and throws away rows, so deep pages get slow and shift under you. Cursor pagination filters past the last seen key and stays fast at any depth.
 category: database
 tech: database
-order: 63
+order: 55
 level: 2
 tags: [sql, pagination, performance, api]
 related: [database-indexes, rest-api-design, laravel-n-plus-1]

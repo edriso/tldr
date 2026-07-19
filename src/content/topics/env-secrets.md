@@ -3,7 +3,7 @@ title: Environment Variables & Secrets
 tldr: Config that changes per environment lives outside the code; a secret that reaches git or the browser is burned.
 category: general
 tech: devops
-order: 63
+order: 73
 level: 1
 tags: [config, secrets, dotenv]
 related: [docker-mental-model, security-owasp-basics, git-workflows]

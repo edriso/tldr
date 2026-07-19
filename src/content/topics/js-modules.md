@@ -3,7 +3,7 @@ title: "Modules: Import & Export"
 tldr: One file is one module with private scope. Export what others need, import what you need, prefer named exports.
 category: language
 tech: javascript
-order: 19
+order: 10
 level: 1
 tags: [modules, import, export, esm]
 related: [js-closures, js-array-methods, react-code-splitting]

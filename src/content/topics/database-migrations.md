@@ -3,7 +3,7 @@ title: Migrations
 tldr: Schema changes written as versioned files in git, run in the same order on every environment, and never edited after they have been applied.
 category: database
 tech: database
-order: 61
+order: 51
 level: 1
 tags: [sql, schema, migrations, deployment]
 related: [git-workflows, database-indexes, database-acid]

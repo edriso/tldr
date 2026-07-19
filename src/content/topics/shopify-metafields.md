@@ -3,7 +3,7 @@ title: Shopify Metafields
 tldr: Extra custom fields you bolt onto products, orders, or customers, stored inside Shopify itself.
 category: ecommerce
 tech: shopify
-order: 40
+order: 65
 level: 2
 related: [shopify-webhooks, database-acid]
 quiz:

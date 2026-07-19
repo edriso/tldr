@@ -3,7 +3,7 @@ title: Money Math
 tldr: Never put money in floats. Store integer minor units with a currency code, round once at agreed points, and format only when you display.
 category: ecommerce
 tech: commerce
-order: 42
+order: 60
 level: 1
 tags: [money, currency, rounding]
 related: [payments-pci, order-lifecycle, cart-checkout-flow]

@@ -3,7 +3,7 @@ title: Dependency Injection in NestJS
 tldr: You never build your own tools, Nest hands each class the tools it asks for.
 category: backend
 tech: nestjs
-order: 30
+order: 41
 level: 2
 related: [solid-principles, nest-request-lifecycle]
 quiz:

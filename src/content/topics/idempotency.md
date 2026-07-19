@@ -3,7 +3,7 @@ title: Idempotency
 tldr: Doing the same request twice must have the same effect as doing it once.
 category: general
 tech: web
-order: 54
+order: 78
 level: 2
 related: [shopify-webhooks, laravel-queues, database-acid]
 quiz:

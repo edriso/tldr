@@ -3,7 +3,7 @@ title: Queues & Background Jobs
 tldr: Answer the user now, do the slow work later on a separate worker process.
 category: backend
 tech: laravel
-order: 33
+order: 43
 level: 2
 related: [idempotency, database-acid]
 quiz:

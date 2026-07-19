@@ -3,7 +3,7 @@ title: REST API Design
 tldr: Name resources as plural nouns, let HTTP verbs carry the action, and answer with honest status codes and one predictable error shape.
 category: backend
 tech: web
-order: 35
+order: 37
 level: 1
 tags: [api, http, rest]
 related: [idempotency, http-caching, pagination-offset-vs-cursor]

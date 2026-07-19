@@ -3,7 +3,7 @@ title: useEffect
 tldr: useEffect syncs your component with things outside React; if it is inside React, you do not need it.
 category: frontend
 tech: react
-order: 21
+order: 32
 level: 2
 related: [react-rendering, client-vs-server-state, js-closures]
 quiz:

@@ -3,7 +3,7 @@ title: The N+1 Query Problem
 tldr: One query fetches the list, then one more query per row sneaks in, killing performance.
 category: backend
 tech: laravel
-order: 32
+order: 40
 level: 1
 related: [laravel-queues, database-acid]
 quiz:

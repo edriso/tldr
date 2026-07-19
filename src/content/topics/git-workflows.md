@@ -3,7 +3,7 @@ title: Git Workflows
 tldr: One branch per change, small commits with real messages, honest merging, and PRs that are easy to review.
 category: general
 tech: git
-order: 55
+order: 71
 level: 1
 tags: [git, collaboration, version-control]
 related: [debugging-method, testing-pyramid]

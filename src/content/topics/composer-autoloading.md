@@ -3,7 +3,7 @@ title: Composer & Autoloading
 tldr: Composer is PHP's package.json. PSR-4 maps namespaces to folders so classes load themselves, with zero require lines.
 category: language
 tech: php
-order: 23
+order: 17
 level: 1
 tags: [composer, autoloading, psr-4, dependencies]
 related: [php-for-js-devs, php-oop, env-secrets]

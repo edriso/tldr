@@ -3,7 +3,7 @@ title: Utility Types
 tldr: "Built-in type transformers: reshape existing types instead of writing near-duplicates by hand."
 category: language
 tech: typescript
-order: 14
+order: 23
 level: 2
 related: [ts-generics, client-vs-server-state]
 quiz:

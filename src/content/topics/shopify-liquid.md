@@ -3,7 +3,7 @@ title: Liquid Mental Model
 tldr: Shopify's safe template language that fills HTML with store data on the server, before the browser sees anything.
 category: ecommerce
 tech: shopify
-order: 44
+order: 62
 level: 1
 tags: [liquid, templates, themes]
 related: [shopify-theme-architecture, cart-checkout-flow, shopify-metafields]

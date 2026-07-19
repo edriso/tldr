@@ -3,7 +3,7 @@ title: Payments & PCI Basics
 tldr: Raw card numbers must never touch your server. Use provider-hosted fields and tokens, confirm intents client-side, and trust only the webhook.
 category: ecommerce
 tech: commerce
-order: 47
+order: 67
 level: 2
 tags: [payments, pci, security]
 related: [idempotency, money-math, shopify-webhooks]

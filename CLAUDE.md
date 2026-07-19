@@ -99,8 +99,10 @@ tldr: One memorable sentence a junior instantly understands (max ~20 words).
 category: general        # language | frontend | backend | ecommerce | general
 tech: web                # short chip label: javascript, typescript, react, nestjs,
                          # laravel, database, shopify, web, design, ...
-order: 55                # position inside its category (language 10s, frontend 20s,
-                         # backend 30s, ecommerce 40s, general 50s)
+order: 55                # LEARNING ORDER inside the category, not insertion order.
+                         # See "Ordering rule" below. Ranges: language 10-23,
+                         # frontend 24-36, backend 37-49, database 50-59,
+                         # ecommerce 60-69, general 70-89.
 level: 2                 # 1 foundation | 2 core | 3 advanced (sorts sections
                          # foundation-first so each category reads as a path)
 tags: [two, or-three]    # lowercase kebab-case
@@ -114,6 +116,28 @@ links:                   # 1-3 "Learn more" cards, official docs only
     note: One short line saying why this link is worth clicking.
 ---
 ```
+
+### Ordering rule (topics form a learning path)
+
+Each category on the home page reads top to bottom as "learn this first".
+That works because topics sort by `level` first, then `order`. Keep BOTH
+consistent when adding a topic:
+
+1. Decide the level (1 foundation, 2 core, 3 advanced).
+2. Ask: "what must the reader already know before this topic, and which
+   existing topics does it unlock?" Place it after its prerequisites.
+3. Give it an `order` number that puts it in that position INSIDE its level
+   band. Do not just append the next free number: renumber neighbors if the
+   topic belongs in the middle (orders are cheap to change, wrong learning
+   order is not). Keep numbers so that sorting by order alone matches
+   sorting by (level, order): all level-1 orders sit below level-2, which sit
+   below level-3, within each category.
+4. Sanity-check by reading the category's cards on the home page top to
+   bottom: it should read like a course outline.
+
+Example: a new "TypeScript basics" topic (level 1) belongs after the JS
+foundations but before PHP, so it takes order 16 and php-for-js-devs,
+composer-autoloading shift to 17, 18.
 
 ### Topic body structure (keep this exact shape)
 

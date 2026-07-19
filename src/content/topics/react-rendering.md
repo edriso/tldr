@@ -3,7 +3,7 @@ title: React Rendering
 tldr: A render is React calling your function again; it is cheap and does not mean the DOM changed.
 category: frontend
 tech: react
-order: 20
+order: 27
 level: 1
 related: [react-keys-and-lists, react-useeffect]
 quiz:

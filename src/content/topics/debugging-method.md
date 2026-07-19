@@ -3,7 +3,7 @@ title: The Debugging Method
 tldr: Reproduce the bug, halve the search space until it is cornered, change one thing, then prove the fix with a test.
 category: general
 tech: process
-order: 56
+order: 72
 level: 1
 tags: [debugging, process, testing]
 related: [git-workflows, testing-pyramid, js-error-handling]

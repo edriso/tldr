@@ -3,7 +3,7 @@ title: Lifting State vs Context
 tldr: State lives in the closest common parent of everyone who needs it; context is only for global, slow-changing values.
 category: frontend
 tech: react
-order: 32
+order: 30
 level: 1
 tags: [react, state, context, props]
 related: [react-rendering, react-controlled-inputs, client-vs-server-state]

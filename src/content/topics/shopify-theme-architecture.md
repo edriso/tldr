@@ -3,7 +3,7 @@ title: Theme Architecture
 tldr: A Shopify theme is five nested layers, layout wraps templates, templates list sections, sections hold blocks, snippets get reused anywhere.
 category: ecommerce
 tech: shopify
-order: 45
+order: 63
 level: 1
 tags: [themes, sections, theme-editor]
 related: [shopify-liquid, cart-checkout-flow, shopify-metafields]

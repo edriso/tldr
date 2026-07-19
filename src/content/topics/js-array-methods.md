@@ -3,7 +3,7 @@ title: Array Methods That Matter
 tldr: map transforms, filter keeps, reduce folds to one value. Chain them, and know which methods mutate.
 category: language
 tech: javascript
-order: 20
+order: 11
 level: 1
 tags: [arrays, map, filter, reduce]
 related: [js-modules, js-closures, pagination-offset-vs-cursor]

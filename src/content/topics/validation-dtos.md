@@ -3,7 +3,7 @@ title: "Validation & DTOs"
 tldr: Check every request against a declared shape at the edge, before business logic ever sees it.
 category: backend
 tech: web
-order: 39
+order: 38
 level: 1
 tags: [validation, dto, api, input]
 related: [rest-api-design, security-owasp-basics, nest-request-lifecycle]

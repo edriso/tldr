@@ -3,7 +3,7 @@ title: Error Handling
 tldr: "Throw real Error objects, catch them in one place, and fail loud instead of hiding the problem."
 category: language
 tech: javascript
-order: 16
+order: 15
 level: 1
 tags: [errors, exceptions, async]
 related: [js-promises-vs-async-await, timeouts-retries-circuit-breakers]

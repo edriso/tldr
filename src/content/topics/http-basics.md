@@ -3,7 +3,7 @@ title: HTTP Basics
 tldr: Every request is a method, a path, headers, and maybe a body; every response is a status, headers, and a body.
 category: general
 tech: web
-order: 62
+order: 70
 level: 1
 tags: [http, protocol, status-codes]
 related: [rest-api-design, http-caching, cors]

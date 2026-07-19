@@ -3,7 +3,7 @@ title: Order Lifecycle
 tldr: An order is a state machine. Each transition has rules and side effects, no state is ever skipped, and the full status history is stored.
 category: ecommerce
 tech: commerce
-order: 43
+order: 61
 level: 1
 tags: [orders, state-machine, fulfillment]
 related: [cart-checkout-flow, payments-pci, idempotency]

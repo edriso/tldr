@@ -3,7 +3,7 @@ title: Responsive & Mobile-First
 tldr: Write the small-screen layout first, then let min-width media queries add complexity as screens grow.
 category: frontend
 tech: css
-order: 30
+order: 26
 level: 1
 tags: [css, responsive, mobile-first, media-queries]
 related: [css-layout, css-cascade-specificity]

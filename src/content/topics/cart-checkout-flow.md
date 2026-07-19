@@ -3,7 +3,7 @@ title: "Cart & Checkout Flow"
 tldr: The cart is your playground (a JSON API you can restyle freely), checkout is Shopify's locked, card-safe fortress.
 category: ecommerce
 tech: shopify
-order: 46
+order: 64
 level: 1
 tags: [cart, checkout, ajax-api]
 related: [shopify-liquid, order-lifecycle, shopify-webhooks]

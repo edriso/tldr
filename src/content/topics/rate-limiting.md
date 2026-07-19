@@ -3,7 +3,7 @@ title: Rate Limiting
 tldr: Cap how many requests each caller can make per time window, and answer the excess with 429 plus a Retry-After header.
 category: backend
 tech: web
-order: 37
+order: 45
 level: 2
 tags: [api, security, middleware]
 related: [rest-api-design, idempotency, timeouts-retries-circuit-breakers]

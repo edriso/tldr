@@ -3,7 +3,7 @@ title: "CSS Layout: Flexbox & Grid"
 tldr: Flexbox distributes items along one line, Grid places items in rows and columns at the same time.
 category: frontend
 tech: css
-order: 28
+order: 24
 level: 1
 tags: [css, layout, flexbox, grid]
 related: [css-cascade-specificity, responsive-design]

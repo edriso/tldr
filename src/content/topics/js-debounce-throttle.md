@@ -3,7 +3,7 @@ title: Debounce & Throttle
 tldr: "Debounce waits for the user to stop; throttle caps how often a function may run."
 category: language
 tech: javascript
-order: 17
+order: 19
 level: 2
 tags: [performance, timers, events]
 related: [js-event-loop, rate-limiting]

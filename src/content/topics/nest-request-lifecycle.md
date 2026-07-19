@@ -3,7 +3,7 @@ title: NestJS Request Lifecycle
 tldr: Every request runs through middleware, guards, interceptors, pipes, handler, then back out, in that exact order.
 category: backend
 tech: nestjs
-order: 31
+order: 42
 level: 2
 related: [nest-dependency-injection, jwt-vs-sessions]
 quiz:

@@ -3,7 +3,7 @@ title: Generics
 tldr: "Generics are type variables: write the logic once, let the caller fill in the type."
 category: language
 tech: typescript
-order: 13
+order: 22
 level: 2
 related: [ts-utility-types, nest-dependency-injection]
 quiz:

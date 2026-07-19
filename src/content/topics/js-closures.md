@@ -3,7 +3,7 @@ title: Closures
 tldr: A function remembers the variables around it, even after the outer function has returned.
 category: language
 tech: javascript
-order: 11
+order: 12
 level: 1
 related: [js-event-loop, react-useeffect]
 quiz:

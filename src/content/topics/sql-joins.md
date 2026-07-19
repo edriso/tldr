@@ -3,7 +3,7 @@ title: SQL Joins
 tldr: Combine rows from two tables by matching keys. INNER keeps only matches, LEFT keeps every left row and fills the gaps with NULL.
 category: database
 tech: database
-order: 60
+order: 50
 level: 1
 tags: [sql, joins, relational]
 related: [database-indexes, laravel-n-plus-1, pagination-offset-vs-cursor]

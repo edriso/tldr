@@ -3,7 +3,7 @@ title: Controlled vs Uncontrolled Inputs
 tldr: Controlled inputs keep their value in React state. Uncontrolled inputs keep it in the DOM. Pick one per input and wire it fully.
 category: frontend
 tech: react
-order: 24
+order: 29
 level: 1
 tags: [forms, state, inputs]
 related: [react-rendering, client-vs-server-state]

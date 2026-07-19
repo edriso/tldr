@@ -3,7 +3,7 @@ title: this & Binding
 tldr: "In JavaScript, `this` is decided by how a function is called, not where it is written."
 category: language
 tech: javascript
-order: 15
+order: 13
 level: 1
 tags: [functions, this, scope]
 related: [js-closures, react-custom-hooks]

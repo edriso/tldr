@@ -3,7 +3,7 @@ title: JWT vs Sessions
 tldr: Sessions mean the server remembers you; a JWT means you carry a signed note proving who you are.
 category: general
 tech: web
-order: 53
+order: 76
 level: 2
 related: [cors, nest-request-lifecycle]
 quiz:

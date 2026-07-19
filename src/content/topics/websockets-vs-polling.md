@@ -3,7 +3,7 @@ title: WebSockets vs Polling vs SSE
 tldr: Polling asks again and again, long-polling holds the question open, SSE streams one way from the server, WebSockets talk both ways. Pick the simplest one that fits.
 category: backend
 tech: web
-order: 38
+order: 46
 level: 2
 tags: [realtime, http, websockets]
 related: [client-vs-server-state, js-event-loop, shopify-webhooks]

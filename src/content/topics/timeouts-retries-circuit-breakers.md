@@ -3,7 +3,7 @@ title: Timeouts, Retries & Circuit Breakers
 tldr: Give every remote call a deadline, retry carefully with backoff, and stop calling services that are already down.
 category: general
 tech: resilience
-order: 61
+order: 83
 level: 3
 tags: [resilience, distributed-systems, retries, fault-tolerance]
 related: [idempotency, rate-limiting, laravel-queues]

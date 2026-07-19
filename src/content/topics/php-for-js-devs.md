@@ -3,7 +3,7 @@ title: PHP for JavaScript Devs
 tldr: Every request gets a fresh script that runs and dies. Arrays are ordered maps, and strict types plus === keep comparisons honest.
 category: language
 tech: php
-order: 21
+order: 16
 level: 1
 tags: [php, mental-model, types, arrays]
 related: [php-oop, composer-autoloading, laravel-n-plus-1]

@@ -3,7 +3,7 @@ title: Scheduled Jobs & Cron
 tldr: Cron runs your code on a clock; keep the schedule thin and push heavy work to the queue.
 category: backend
 tech: web
-order: 40
+order: 39
 level: 1
 tags: [cron, scheduling, automation]
 related: [laravel-queues, idempotency, timeouts-retries-circuit-breakers]

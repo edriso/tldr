@@ -3,7 +3,7 @@ title: Seeding & Factories
 tldr: Seeds give every environment the same baseline data. Factories mass-produce random but valid records. Fresh database plus migrations plus seeds equals a working app in one command.
 category: database
 tech: database
-order: 66
+order: 52
 level: 1
 tags: [seeding, factories, test-data]
 related: [database-migrations, testing-pyramid]

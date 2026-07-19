@@ -3,7 +3,7 @@ title: Keys & Lists
 tldr: Keys tell React which item is which across renders; index keys lie the moment the list reorders.
 category: frontend
 tech: react
-order: 22
+order: 28
 level: 1
 related: [react-rendering, react-useeffect]
 quiz:

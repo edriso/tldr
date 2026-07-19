@@ -3,7 +3,7 @@ title: Indexes
 tldr: A sorted lookup structure that lets the database jump to matching rows instead of scanning the whole table. Reads get fast, every write pays a small tax.
 category: database
 tech: database
-order: 62
+order: 54
 level: 2
 tags: [sql, indexes, performance, b-tree]
 related: [laravel-n-plus-1, pagination-offset-vs-cursor, sql-joins]

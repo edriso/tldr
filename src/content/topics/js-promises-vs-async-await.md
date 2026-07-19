@@ -3,7 +3,7 @@ title: Promises vs Async/Await
 tldr: Async/await is just nicer syntax over promises; know when to chain, await, or run in parallel.
 category: language
 tech: javascript
-order: 12
+order: 14
 level: 1
 related: [js-event-loop, react-useeffect]
 quiz:

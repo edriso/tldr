@@ -3,7 +3,7 @@ title: Caching Layers & Redis
 tldr: Keep hot, slow-to-compute data in a fast store with a TTL, and delete the key on every write so the next read refills it fresh.
 category: backend
 tech: web
-order: 36
+order: 44
 level: 2
 tags: [caching, redis, performance]
 related: [http-caching, database-indexes, rate-limiting]

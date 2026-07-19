@@ -3,7 +3,7 @@ title: "PHP OOP: Interfaces & Traits"
 tldr: Interfaces are contracts, traits are reusable method sets mixed into classes, and constructor promotion cuts the boilerplate.
 category: language
 tech: php
-order: 22
+order: 20
 level: 2
 tags: [php, oop, interfaces, traits]
 related: [solid-principles, php-for-js-devs, nest-dependency-injection]

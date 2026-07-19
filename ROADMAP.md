@@ -21,6 +21,8 @@ Levels: 1 = foundation, 2 = core, 3 = advanced.
 - [x] Narrowing & Type Guards (includes discriminated unions)
 - [x] Modules: Import & Export
 - [x] Array Methods That Matter
+- [ ] npm, package.json, and semver (1)
+- [ ] TypeScript basics: typing objects and functions (1)
 - [ ] Immutability and references (2)
 - [x] PHP for JavaScript Devs
 - [x] PHP OOP: Interfaces & Traits
@@ -60,6 +62,7 @@ Levels: 1 = foundation, 2 = core, 3 = advanced.
 - [x] Dependency Injection in NestJS
 - [x] NestJS Request Lifecycle
 - [x] The N+1 Query Problem
+- [ ] Eloquent relationships (1)
 - [x] Queues & Background Jobs
 - [x] REST API Design
 - [x] Caching Layers & Redis
@@ -125,6 +128,7 @@ Levels: 1 = foundation, 2 = core, 3 = advanced.
 - [x] Docker Mental Model
 - [x] Timeouts, Retries & Circuit Breakers
 - [x] HTTP Basics
+- [ ] How the web works: DNS, domains, and hosting (1)
 - [x] Environment Variables & Secrets
 - [ ] CI/CD pipelines (2)
 - [ ] Design patterns you actually meet: strategy, factory, observer (2)

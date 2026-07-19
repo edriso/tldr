@@ -3,7 +3,7 @@ title: Custom Hooks
 tldr: A custom hook is a plain function that calls other hooks. It shares logic between components, never the state itself.
 category: frontend
 tech: react
-order: 25
+order: 33
 level: 2
 tags: [hooks, reuse, state]
 related: [react-useeffect, js-closures, client-vs-server-state]
