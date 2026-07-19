@@ -4,15 +4,40 @@ Guidance for Claude Code (and humans) working in this repository.
 
 ## What this project is
 
-"tl;dr" is a public cheat-sheet site of short developer notes that stick. Each
-topic teaches one concept through one analogy, one example, one real use case,
-and one memorable line. The owner is a full-stack developer (JS, TS, PHP/Laravel,
-NestJS, React, Shopify), but topics should stay concept-first so they survive
-technology changes. Readers may be juniors or seniors wanting a fast refresher,
-often reading English as a second language.
+"tl;dr" is the owner's go-to learning guide: a public site of short developer
+notes designed to take a dev from zero to senior in this stack (JS, TS, React,
+NestJS, PHP/Laravel, Shopify) while staying concept-first so knowledge survives
+technology changes. Each topic teaches one concept through one analogy, one
+worked example (steps, not answers), one real use case, gotchas, a recall quiz,
+and one memorable line. Readers may be juniors or seniors wanting a fast
+refresher, often reading English as a second language. The owner does not read
+long texts; every topic must be scannable in a few minutes.
 
 - **Live site:** https://edriso.github.io/tldr/
 - **Repo:** https://github.com/edriso/tldr
+- **Curriculum backlog:** [ROADMAP.md](./ROADMAP.md) lists the topics still
+  needed per track. When asked to "add topics", pick from there first and check
+  items off as they are written.
+
+## The learning science behind the format (do not water this down)
+
+The format is deliberate, based on cognitive load theory and the owner's
+[how-to-learn](https://github.com/edriso/how-to-learn) guide:
+
+- **Worked examples beat finished answers.** Step-by-step solutions lower
+  cognitive load and improve retention and near transfer versus unguided
+  problem solving ([study](https://www.tandfonline.com/doi/full/10.1080/01443410.2023.2273762)).
+  So `## Worked example` shows numbered small steps with reasoning, never one
+  big final code block.
+- **Fading.** As learners progress, guidance is pulled back. `## Try it` asks
+  the reader to redo the last step alone.
+- **Active recall.** Retrieving beats rereading. The `quiz` frontmatter powers
+  the "Check yourself" section; answers start hidden on purpose.
+- **Association.** The brain remembers in chains. `related` links topics so
+  recalling one pulls in its neighbors; analogies and mnemonics serve the same
+  goal.
+- **Low load everywhere.** Short files, easy English, one concept per topic,
+  levels (foundation before advanced) so nothing demands too much at once.
 
 ## Commands
 
@@ -76,7 +101,13 @@ tech: web                # short chip label: javascript, typescript, react, nest
                          # laravel, database, shopify, web, design, ...
 order: 55                # position inside its category (language 10s, frontend 20s,
                          # backend 30s, ecommerce 40s, general 50s)
+level: 2                 # 1 foundation | 2 core | 3 advanced (sorts sections
+                         # foundation-first so each category reads as a path)
 tags: [two, or-three]    # lowercase kebab-case
+related: [slug-a, slug-b]  # 2-3 existing topic slugs to link in the brain
+quiz:                    # 2-3 active-recall questions ("Check yourself")
+  - q: "Scenario question that tests understanding, not recitation?"
+    a: "Short answer, 1-2 sentences."
 links:                   # 1-3 "Learn more" cards, official docs only
   - title: Resource Name
     url: https://...
@@ -89,18 +120,24 @@ links:                   # 1-3 "Learn more" cards, official docs only
 1. `## Analogy` - one vivid everyday analogy, 3-5 sentences.
 2. One or two concept sections with plain-language headings (bullets preferred).
    If the topic is an acronym (SOLID, ACID), spell it out letter by letter.
-3. `## Example` - ONE small correct code block, 10-25 lines, idiomatic modern syntax.
-4. `## Real use case` - 4-6 sentences applied to an e-commerce store or a
+3. `## Worked example` - the concept built in 3-5 numbered steps. Each step is
+   one bold reasoning sentence (`**Step N: what and why.**`) plus a SMALL code
+   fragment (2-8 lines). Never one big finished block: steps are the teaching.
+4. `## Try it` - 1-3 sentences asking the reader to redo the last step alone,
+   with the expected outcome in parentheses (this is the fading step).
+5. `## Real use case` - 4-6 sentences applied to an e-commerce store or a
    learning app (orders, checkout, carts, enrollment, course progress).
-5. `## Gotchas` - 3-5 bullets of real mistakes.
-6. `## Remember` - a blockquote with a one-line mnemonic or catchphrase. Always last.
+6. `## Gotchas` - 3-5 bullets of real mistakes.
+7. `## Remember` - a blockquote with a one-line mnemonic or catchphrase. Always last.
+
+`solid-principles.md` is the reference example of the full format.
 
 Videos are allowed but rare; prefer text. If ever needed, add a frontmatter
 field and component the same way nt-trainings does it.
 
 ### Writing style rules
 
-- **Short.** 55-90 lines per file. To the point, zero fluff.
+- **Short.** Max 115 lines per file. To the point, zero fluff.
 - **Easy English.** Short sentences, common words, explain every acronym on
   first use ("RUM (Real User Monitoring)").
 - **NO em dashes (—) or en dashes (–), ever.** Use commas, colons, periods, or
@@ -117,6 +154,9 @@ field and component the same way nt-trainings does it.
 
 - A `tldr:` (or any value) containing a colon MUST be wrapped in quotes, or the
   YAML breaks at runtime while the build still passes.
+- Every `q:` and `a:` in `quiz` MUST be wrapped in double quotes, always.
+- `related` slugs must be existing file names (missing ones are silently
+  skipped by the RelatedTopics component, so typos hide instead of crashing).
 - Validate after content changes:
 
 ```bash

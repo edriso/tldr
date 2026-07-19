@@ -1,8 +1,14 @@
 # tl;dr
 
-Short developer notes that stick. One analogy, one example, one real use case,
-and one line to remember per topic. Built for a full-stack JS/TS, PHP/Laravel,
-NestJS, React, and Shopify stack, but the concepts are general on purpose.
+Short developer notes that stick. Every topic is one analogy, one worked
+example (steps, not answers), one real use case, gotchas, a recall quiz, and
+one line to remember. Built for a full-stack JS/TS, PHP/Laravel, NestJS,
+React, and Shopify stack, but the concepts are general on purpose.
+
+The format follows learning science: worked examples lower cognitive load and
+boost retention, hidden quiz answers force active recall, related-topic links
+build association chains, and levels (foundation, core, advanced) keep each
+step small. See [ROADMAP.md](./ROADMAP.md) for the topics still coming.
 
 **Live site:** https://edriso.github.io/tldr/
 
@@ -30,9 +36,10 @@ npm run lint      # lint with oxlint
 
 ## Add a new topic
 
-1. Create a new file in `src/content/topics/`, for example `websockets.md`.
-2. Copy the frontmatter from an existing topic and fill it in.
-3. Follow the topic template in [CLAUDE.md](./CLAUDE.md)
+1. Pick a topic (unchecked items in [ROADMAP.md](./ROADMAP.md) come first).
+2. Create a new file in `src/content/topics/`, for example `websockets.md`.
+3. Copy the frontmatter from `solid-principles.md` (the reference example).
+4. Follow the topic template in [CLAUDE.md](./CLAUDE.md)
    (that file is the single source of truth for how topics are written).
 
 That is it. No code changes needed; the site picks up new files automatically.
