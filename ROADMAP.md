@@ -29,6 +29,7 @@ Levels: 1 = foundation, 2 = core, 3 = advanced.
 - [x] Composer & Autoloading
 - [ ] Dates and timezones (2)
 - [ ] Regex you actually need (2)
+- [ ] JSDoc typing: types without TypeScript (2)
 - [ ] Iterators and generators (3)
 - [ ] Structural vs nominal typing (3)
 
@@ -49,6 +50,10 @@ Levels: 1 = foundation, 2 = core, 3 = advanced.
 - [x] Lifting State vs Context
 - [ ] Forms and validation (2)
 - [ ] React error boundaries (2)
+- [ ] Web Components: custom elements and Shadow DOM (2)
+- [ ] Custom events and pub/sub UI (2)
+- [ ] CSS custom properties and design tokens (2)
+- [ ] Import maps and no-build JavaScript (2)
 - [ ] Optimistic updates (2)
 - [ ] Image optimization (2)
 - [ ] SEO for developers: meta tags and structured data (2)
@@ -56,6 +61,7 @@ Levels: 1 = foundation, 2 = core, 3 = advanced.
 - [ ] Suspense and streaming (3)
 - [ ] SSR, SSG, and hydration (3)
 - [ ] State machines for UI (3)
+- [ ] Canvas basics for interactive graphics (3)
 
 ## Backend (NestJS / Laravel / APIs)
 
@@ -110,6 +116,8 @@ Levels: 1 = foundation, 2 = core, 3 = advanced.
 - [ ] Storefront API vs Admin API (2)
 - [ ] Product variants and options model (2)
 - [ ] Discounts and price rules (2)
+- [ ] Section Rendering API and partial re-renders (3)
+- [ ] Shopify Functions: cart transforms in plain words (3)
 - [ ] Inventory across locations (3)
 - [ ] Checkout extensibility (3)
 
@@ -129,10 +137,12 @@ Levels: 1 = foundation, 2 = core, 3 = advanced.
 - [x] Timeouts, Retries & Circuit Breakers
 - [x] HTTP Basics
 - [ ] How the web works: DNS, domains, and hosting (1)
+- [ ] Linters and formatters: ESLint, Prettier, and friends (1)
 - [x] Environment Variables & Secrets
 - [ ] CI/CD pipelines (2)
 - [ ] Design patterns you actually meet: strategy, factory, observer (2)
 - [ ] Feature flags (2)
+- [ ] A/B testing and experiments (2)
 - [ ] Logging and monitoring (2)
 - [ ] DRY, KISS, YAGNI (and when to break them) (2)
 - [ ] Reading unfamiliar code (2)
@@ -141,3 +151,16 @@ Levels: 1 = foundation, 2 = core, 3 = advanced.
 - [ ] Refactoring legacy code safely (3)
 - [ ] Architecture styles: monolith, modular monolith, microservices (3)
 - [ ] Estimation and breaking down tickets (3)
+
+## AI & prompt engineering (lives in claude-goat)
+
+Per CLAUDE.md, AI lessons belong in the
+[claude-goat](https://github.com/edriso/claude-goat) guide; tl;dr only links
+to it. Gaps found in claude-goat worth adding THERE, not here:
+
+- [ ] AI code review workflow (PR review, rubrics, security scanning)
+- [ ] Evaluating AI output: evals, LLM-as-judge, regression suites for prompts
+- [ ] RAG and embeddings in plain words
+- [ ] Structured outputs and tool calling from app code
+- [ ] Token cost, latency, and prompt caching
+- [ ] Prompt injection and AI security basics
