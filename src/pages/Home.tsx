@@ -1,0 +1,103 @@
+import { Search } from 'lucide-react'
+import { useState } from 'react'
+import { TopicCard } from '../components/TopicCard'
+import { CATEGORIES, searchTopics, topics, type Category } from '../lib/topics'
+
+export function Home() {
+  const [query, setQuery] = useState('')
+  const [category, setCategory] = useState<Category | 'all'>('all')
+
+  const results = searchTopics(query).filter(
+    (topic) => category === 'all' || topic.category === category,
+  )
+
+  const isFiltering = query.trim() !== '' || category !== 'all'
+  const categoryKeys = Object.keys(CATEGORIES) as Category[]
+
+  return (
+    <div>
+      <section className="py-6 sm:py-8">
+        <h1 className="font-mono text-3xl font-bold tracking-tight text-zinc-900 sm:text-4xl dark:text-zinc-50">
+          Dev notes that <span className="text-accent">stick</span>.
+        </h1>
+        <p className="mt-3 max-w-2xl leading-relaxed text-zinc-600 dark:text-zinc-400">
+          Short refreshers for the stack we work with. Every topic is one analogy, one
+          example, one real use case, and one line to remember. Nothing more.
+        </p>
+      </section>
+
+      <section className="flex flex-col gap-3 sm:flex-row sm:items-center">
+        <label className="relative block flex-1">
+          <Search
+            size={16}
+            className="pointer-events-none absolute top-1/2 left-3.5 -translate-y-1/2 text-zinc-400"
+          />
+          <span className="sr-only">Search topics</span>
+          <input
+            type="search"
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            placeholder="Search topics, tags, tech…"
+            className="w-full rounded-xl border border-zinc-200 bg-white py-2.5 pr-4 pl-10 text-sm text-zinc-900 placeholder:text-zinc-400 focus:border-accent focus:ring-2 focus:ring-accent/20 focus:outline-none dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-50"
+          />
+        </label>
+        <div className="flex flex-wrap gap-1.5">
+          {(['all', ...categoryKeys] as const).map((key) => (
+            <button
+              key={key}
+              type="button"
+              onClick={() => setCategory(key)}
+              className={`rounded-full px-3 py-1.5 font-mono text-xs font-medium transition ${
+                category === key
+                  ? 'bg-accent-strong text-white dark:bg-accent dark:text-zinc-950'
+                  : 'bg-zinc-200/60 text-zinc-600 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-700'
+              }`}
+            >
+              {key === 'all' ? 'all' : CATEGORIES[key].label.toLowerCase()}
+            </button>
+          ))}
+        </div>
+      </section>
+
+      {isFiltering ? (
+        <section className="mt-8">
+          <p className="font-mono text-xs text-zinc-500 dark:text-zinc-400">
+            {results.length} {results.length === 1 ? 'topic' : 'topics'} found
+          </p>
+          <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {results.map((topic) => (
+              <TopicCard key={topic.slug} topic={topic} />
+            ))}
+          </div>
+          {results.length === 0 && (
+            <p className="mt-6 text-zinc-600 dark:text-zinc-400">
+              Nothing found. Try another word, or clear the filters.
+            </p>
+          )}
+        </section>
+      ) : (
+        categoryKeys.map((key) => {
+          const sectionTopics = topics.filter((topic) => topic.category === key)
+          if (sectionTopics.length === 0) return null
+          return (
+            <section key={key} className="mt-10">
+              <div className="flex items-baseline gap-3">
+                <h2 className="font-mono text-sm font-bold tracking-wide text-zinc-900 uppercase dark:text-zinc-50">
+                  {CATEGORIES[key].label}
+                </h2>
+                <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                  {CATEGORIES[key].blurb}
+                </p>
+              </div>
+              <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                {sectionTopics.map((topic) => (
+                  <TopicCard key={topic.slug} topic={topic} />
+                ))}
+              </div>
+            </section>
+          )
+        })
+      )}
+    </div>
+  )
+}

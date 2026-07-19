@@ -1,0 +1,112 @@
+@import 'tailwindcss';
+
+/*
+ * Dark mode is controlled by a `dark` class on the <html> element.
+ * See src/hooks/useTheme.ts for the toggle logic.
+ */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  /* Brand accent (violet). Change these two lines to re-color the whole site. */
+  --color-accent: oklch(0.66 0.17 292);
+  --color-accent-strong: oklch(0.54 0.19 292);
+
+  /* System fonts only: fast, and the mono stack gives the cheat-sheet feel. */
+  --font-sans:
+    ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    sans-serif;
+  --font-mono:
+    ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  @apply bg-zinc-50 text-zinc-800 antialiased dark:bg-zinc-950 dark:text-zinc-200;
+}
+
+/*
+ * Styles for topic content rendered from Markdown.
+ * Everything inside <article class="prose"> gets these styles.
+ */
+.prose {
+  @apply leading-relaxed;
+}
+
+.prose h2 {
+  @apply mt-10 mb-3 flex items-center gap-2 font-mono text-lg font-bold tracking-tight text-zinc-900 dark:text-zinc-50;
+}
+
+/* A small "##" marker before each heading, matching the Markdown source. */
+.prose h2::before {
+  content: '##';
+  @apply font-mono text-sm font-semibold text-accent;
+}
+
+.prose h3 {
+  @apply mt-6 mb-2 text-base font-semibold text-zinc-900 dark:text-zinc-50;
+}
+
+.prose p {
+  @apply my-3;
+}
+
+.prose a {
+  @apply font-medium text-accent-strong underline decoration-accent/40 underline-offset-4 transition hover:decoration-accent dark:text-accent;
+}
+
+.prose strong {
+  @apply font-semibold text-zinc-900 dark:text-zinc-50;
+}
+
+.prose ul {
+  @apply my-3 list-disc space-y-1.5 pl-5;
+}
+
+.prose ol {
+  @apply my-3 list-decimal space-y-1.5 pl-5;
+}
+
+.prose blockquote {
+  @apply my-5 rounded-lg border border-accent/30 bg-accent/5 px-4 py-3 font-medium text-zinc-800 dark:text-zinc-100;
+}
+
+.prose blockquote p {
+  @apply my-0;
+}
+
+.prose code {
+  @apply rounded bg-zinc-200/60 px-1.5 py-0.5 font-mono text-[0.88em] text-zinc-800 dark:bg-zinc-800 dark:text-zinc-200;
+}
+
+.prose pre {
+  @apply my-5 overflow-x-auto rounded-lg bg-zinc-900 p-4 text-[13px] leading-relaxed text-zinc-100 dark:ring-1 dark:ring-zinc-800;
+}
+
+.prose pre code {
+  @apply bg-transparent p-0 text-inherit;
+}
+
+.prose table {
+  @apply my-5 w-full border-collapse text-sm;
+}
+
+.prose th {
+  @apply border-b-2 border-zinc-200 px-3 py-2 text-left font-semibold text-zinc-900 dark:border-zinc-700 dark:text-zinc-50;
+}
+
+.prose td {
+  @apply border-b border-zinc-200 px-3 py-2 align-top dark:border-zinc-800;
+}
+
+.prose hr {
+  @apply my-8 border-zinc-200 dark:border-zinc-800;
+}
