@@ -1,0 +1,84 @@
+---
+title: React Rendering
+tldr: A render is React calling your function again; it is cheap and does not mean the DOM changed.
+category: frontend
+tech: react
+order: 20
+tags: [rendering, performance, memoization]
+links:
+  - title: Render and Commit
+    url: https://react.dev/learn/render-and-commit
+    note: The official three-step model of how React puts your UI on screen.
+  - title: memo
+    url: https://react.dev/reference/react/memo
+    note: When and how to skip re-renders for a component whose props did not change.
+---
+
+## Analogy
+
+A render is like a chef re-reading a recipe. Reading the recipe again is fast
+and harmless. The expensive part is only cooking the dishes that actually
+changed. React re-reads recipes often, then compares the new plan to the old
+one, and only touches the pans (the DOM, the browser's page structure) that
+are different.
+
+## What triggers a render
+
+- A component renders when its state changes, or when its parent re-renders.
+- Props changing does not trigger a render by itself. The parent rendering does.
+- A render is just React calling your component function to get new JSX.
+- After rendering, React diffs the result and commits only real changes to the DOM.
+- So re-render does not mean DOM update. Most re-renders touch nothing.
+
+## When to reach for memo
+
+- Re-renders are usually fine. Measure before optimizing.
+- `memo(Component)` skips a render when props are shallow-equal.
+- `useMemo` caches a computed value, `useCallback` caches a function, so props stay stable between renders.
+- These are targeted fixes for proven hot spots, not defaults for every component.
+- A `key` gives a component its identity. Changing the key destroys it and remounts it with fresh state.
+
+## Example
+
+```tsx
+import { memo, useCallback, useState } from "react";
+
+const Row = memo(function Row({ label, onPick }: { label: string; onPick: () => void }) {
+  return <button onClick={onPick}>{label}</button>;
+});
+
+export function List() {
+  const [count, setCount] = useState(0);
+  // Stable reference: Row's props do not change, so memo skips it.
+  const pick = useCallback(() => console.log("picked"), []);
+  return (
+    <>
+      <p>Clicks: {count}</p>
+      <button onClick={() => setCount((c) => c + 1)}>+1</button>
+      <Row label="Add to cart" onPick={pick} />
+    </>
+  );
+}
+```
+
+## Real use case
+
+A product page shows a cart badge in the header. Every "add to cart" updates
+cart state, which re-renders the page. The 60-item product grid also
+re-renders, but nothing in it changed, so the DOM stays untouched and users
+notice nothing. If profiling shows the grid render itself is slow, wrap the
+product card in `memo` and keep its callback props stable with `useCallback`.
+When the user switches store region, change the `key` on the grid to reset
+its internal state cleanly.
+
+## Gotchas
+
+- Treating every re-render as a bug. Rendering is cheap; fix only measured slowness.
+- Wrapping a component in `memo` but passing a fresh inline object or arrow function each render, which defeats it.
+- Believing a prop change causes renders. The parent's render does; memo is what makes props matter.
+- Doing side effects during render. Render must be a pure calculation.
+- Forgetting that changing `key` wipes state. Sometimes that is the feature you want.
+
+## Remember
+
+> Render is a phone call, commit is the visit: React calls often, but only visits the DOM when something changed.
