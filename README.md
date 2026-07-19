@@ -32,7 +32,15 @@ Other scripts:
 npm run build     # type-check + production build (output in dist/)
 npm run preview   # serve the production build locally
 npm run lint      # lint with oxlint
+npm run pdf       # generate tldr.pdf, the whole guide as a printable PDF
 ```
+
+## Printable PDF
+
+The whole guide is available as one print-friendly PDF: the download button in
+the site header, or https://edriso.github.io/tldr/tldr.pdf. CI regenerates it
+on every deploy. Locally, `npm run pdf` builds it with your installed Chrome
+(the file is gitignored; set `CHROME_PATH` if Chrome is somewhere unusual).
 
 ## Add a new topic
 

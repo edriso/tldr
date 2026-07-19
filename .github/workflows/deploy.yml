@@ -26,6 +26,9 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build
+      # Build the printable PDF into the site (Chrome is preinstalled on
+      # ubuntu runners), so /tldr.pdf is downloadable next to the pages.
+      - run: npm run pdf -- dist/tldr.pdf
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
