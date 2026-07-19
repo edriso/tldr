@@ -106,10 +106,10 @@ guard from step 3 stays untouched and already blocks every illegal path.)
 
 ## Real use case
 
-A customer of an e-commerce store claims a parcel never arrived and demands a
-refund, three weeks later. Because the store keeps status history, support
-can see: paid on the 2nd, fulfilled on the 3rd, delivered (carrier webhook)
-on the 6th. With only a current status column that says "delivered", nobody
+A customer claims a parcel never arrived and demands a refund three weeks
+later. Because the store keeps status history, support can see: paid on the
+2nd, fulfilled on the 3rd, delivered (carrier webhook) on the 6th. With only
+a current status column that says "delivered", nobody
 could say when, or prove the payment ever preceded the shipment.
 
 ## Gotchas

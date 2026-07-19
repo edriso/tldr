@@ -3,7 +3,7 @@ title: The Testing Pyramid
 tldr: Many fast unit tests at the bottom, fewer integration tests in the middle, a handful of end-to-end tests on top.
 category: general
 tech: testing
-order: 80
+order: 81
 level: 2
 tags: [testing, quality, ci]
 related: [debugging-method, solid-principles, git-workflows]

@@ -29,7 +29,7 @@ Levels: 1 = foundation, 2 = core, 3 = advanced.
 - [x] Composer & Autoloading
 - [ ] Dates and timezones (2)
 - [ ] Regex you actually need (2)
-- [ ] JSDoc typing: types without TypeScript (2)
+- [x] JSDoc Typing: Types Without TypeScript
 - [ ] Iterators and generators (3)
 - [ ] Structural vs nominal typing (3)
 
@@ -50,10 +50,10 @@ Levels: 1 = foundation, 2 = core, 3 = advanced.
 - [x] Lifting State vs Context
 - [ ] Forms and validation (2)
 - [ ] React error boundaries (2)
-- [ ] Web Components: custom elements and Shadow DOM (2)
-- [ ] Custom events and pub/sub UI (2)
-- [ ] CSS custom properties and design tokens (2)
-- [ ] Import maps and no-build JavaScript (2)
+- [x] Web Components
+- [x] Custom Events & Pub/Sub
+- [x] CSS Custom Properties & Design Tokens
+- [x] Import Maps & No-Build JavaScript
 - [ ] Optimistic updates (2)
 - [ ] Image optimization (2)
 - [ ] SEO for developers: meta tags and structured data (2)
@@ -61,7 +61,7 @@ Levels: 1 = foundation, 2 = core, 3 = advanced.
 - [ ] Suspense and streaming (3)
 - [ ] SSR, SSG, and hydration (3)
 - [ ] State machines for UI (3)
-- [ ] Canvas basics for interactive graphics (3)
+- [x] Canvas Basics
 
 ## Backend (NestJS / Laravel / APIs)
 
@@ -116,8 +116,8 @@ Levels: 1 = foundation, 2 = core, 3 = advanced.
 - [ ] Storefront API vs Admin API (2)
 - [ ] Product variants and options model (2)
 - [ ] Discounts and price rules (2)
-- [ ] Section Rendering API and partial re-renders (3)
-- [ ] Shopify Functions: cart transforms in plain words (3)
+- [x] Section Rendering API
+- [x] Shopify Functions
 - [ ] Inventory across locations (3)
 - [ ] Checkout extensibility (3)
 
@@ -137,12 +137,12 @@ Levels: 1 = foundation, 2 = core, 3 = advanced.
 - [x] Timeouts, Retries & Circuit Breakers
 - [x] HTTP Basics
 - [ ] How the web works: DNS, domains, and hosting (1)
-- [ ] Linters and formatters: ESLint, Prettier, and friends (1)
+- [x] Linters & Formatters
 - [x] Environment Variables & Secrets
 - [ ] CI/CD pipelines (2)
 - [ ] Design patterns you actually meet: strategy, factory, observer (2)
 - [ ] Feature flags (2)
-- [ ] A/B testing and experiments (2)
+- [x] A/B Testing & Experiments
 - [ ] Logging and monitoring (2)
 - [ ] DRY, KISS, YAGNI (and when to break them) (2)
 - [ ] Reading unfamiliar code (2)
@@ -158,9 +158,9 @@ Per CLAUDE.md, AI lessons belong in the
 [claude-goat](https://github.com/edriso/claude-goat) guide; tl;dr only links
 to it. Gaps found in claude-goat worth adding THERE, not here:
 
-- [ ] AI code review workflow (PR review, rubrics, security scanning)
-- [ ] Evaluating AI output: evals, LLM-as-judge, regression suites for prompts
-- [ ] RAG and embeddings in plain words
-- [ ] Structured outputs and tool calling from app code
-- [ ] Token cost, latency, and prompt caching
-- [ ] Prompt injection and AI security basics
+- [x] AI code review workflow (added to claude-goat)
+- [x] Evaluating AI output (added to claude-goat)
+- [x] RAG and embeddings (added to claude-goat)
+- [x] Structured outputs and tool calling (added to claude-goat)
+- [x] Token cost, latency, and prompt caching (added to claude-goat)
+- [x] Prompt injection and AI security (added to claude-goat)

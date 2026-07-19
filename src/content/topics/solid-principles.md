@@ -3,7 +3,7 @@ title: SOLID Principles
 tldr: Five rules that keep object-oriented code easy to change without breaking other code.
 category: general
 tech: design
-order: 79
+order: 80
 level: 2
 tags: [architecture, oop, clean-code]
 related: [nest-dependency-injection, idempotency]

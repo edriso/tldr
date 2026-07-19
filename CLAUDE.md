@@ -100,9 +100,12 @@ category: general        # language | frontend | backend | ecommerce | general
 tech: web                # short chip label: javascript, typescript, react, nestjs,
                          # laravel, database, shopify, web, design, ...
 order: 55                # LEARNING ORDER inside the category, not insertion order.
-                         # See "Ordering rule" below. Ranges: language 10-23,
-                         # frontend 24-36, backend 37-49, database 50-59,
-                         # ecommerce 60-69, general 70-89.
+                         # See "Ordering rule" below. Orders are only compared
+                         # WITHIN a category, so ranges may overlap across
+                         # categories; each category just keeps its own
+                         # ascending sequence (language starts at 10, frontend
+                         # at 24, backend at 37, database at 50, ecommerce at
+                         # 60, general at 70).
 level: 2                 # 1 foundation | 2 core | 3 advanced (sorts sections
                          # foundation-first so each category reads as a path)
 tags: [two, or-three]    # lowercase kebab-case

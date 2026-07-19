@@ -3,7 +3,7 @@ title: CORS
 tldr: "A browser safety rule: JavaScript from one site cannot read another site's API unless that API says yes."
 category: general
 tech: web
-order: 74
+order: 75
 level: 1
 related: [http-caching, jwt-vs-sessions]
 quiz:

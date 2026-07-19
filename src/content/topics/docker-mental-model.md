@@ -3,7 +3,7 @@ title: Docker Mental Model
 tldr: Ship the whole environment as a frozen image, then run identical copies of it anywhere.
 category: general
 tech: devops
-order: 82
+order: 84
 level: 2
 tags: [docker, containers, devops, environments]
 quiz:

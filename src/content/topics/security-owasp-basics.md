@@ -3,7 +3,7 @@ title: Security Basics (OWASP)
 tldr: The handful of security risks every full-stack developer touches daily, and the one-line habit that blocks each.
 category: general
 tech: security
-order: 81
+order: 83
 level: 2
 tags: [security, owasp, backend]
 related: [jwt-vs-sessions, cors, rest-api-design]

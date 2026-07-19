@@ -3,7 +3,7 @@ title: HTTP Caching
 tldr: Headers that tell browsers and CDNs how long they may reuse a response without asking again.
 category: general
 tech: web
-order: 75
+order: 76
 level: 2
 related: [cors, client-vs-server-state]
 quiz:
