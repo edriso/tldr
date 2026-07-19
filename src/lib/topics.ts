@@ -16,9 +16,15 @@ export const CATEGORIES = {
   },
   backend: {
     label: 'Backend',
-    blurb: 'NestJS, Laravel, and databases.',
+    blurb: 'NestJS, Laravel, and APIs.',
     chip: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300',
     bar: 'bg-emerald-400',
+  },
+  database: {
+    label: 'Databases',
+    blurb: 'Modeling, querying, and keeping data safe.',
+    chip: 'bg-orange-100 text-orange-800 dark:bg-orange-950 dark:text-orange-300',
+    bar: 'bg-orange-400',
   },
   ecommerce: {
     label: 'E-commerce',

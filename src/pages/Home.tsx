@@ -21,8 +21,8 @@ export function Home() {
           Dev notes that <span className="text-accent">stick</span>.
         </h1>
         <p className="mt-3 max-w-2xl leading-relaxed text-zinc-600 dark:text-zinc-400">
-          Short refreshers for the stack we work with. Every topic is one analogy, one
-          example, one real use case, and one line to remember. Nothing more.
+          Short refreshers from foundation to senior. Every topic is one analogy, one
+          worked example, one real use case, a quick quiz, and one line to remember.
         </p>
       </section>
 
