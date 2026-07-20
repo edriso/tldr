@@ -38,9 +38,12 @@ npm run pdf       # generate tldr.pdf, the whole guide as a printable PDF
 ## Printable PDF
 
 The whole guide is available as one print-friendly PDF: the download button in
-the site header, or https://edriso.github.io/tldr/tldr.pdf. CI regenerates it
-on every deploy. Locally, `npm run pdf` builds it with your installed Chrome
-(the file is gitignored; set `CHROME_PATH` if Chrome is somewhere unusual).
+the site header, or https://edriso.github.io/tldr/tldr.pdf. Each category also
+has its own smaller PDF (the "PDF" link beside each section title, e.g.
+`tldr-frontend.pdf`). CI regenerates all of them on every deploy. Locally,
+`npm run pdf` builds the full one and `npm run pdf -- tldr.pdf --split` builds
+the per-category files too (all gitignored; set `CHROME_PATH` if Chrome is
+somewhere unusual).
 
 ## Add a new topic
 

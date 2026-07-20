@@ -85,13 +85,16 @@ Key decisions (do not undo them casually):
   `index.html` to `404.html` so deep links work on Pages.
 - **Stay fast:** system fonts only, lazy-loaded topic page, no new dependencies
   without checking bundle size in the build output.
-- **Printable PDF:** `scripts/generate-pdf.mjs` builds the whole guide into
-  one PDF via headless Chrome (no Puppeteer dependency). CI runs it on every
-  deploy into `dist/tldr.pdf`; the header's download button links there. The
-  local `tldr.pdf` is gitignored. The script keeps its own copy of the
+- **Printable PDFs:** `scripts/generate-pdf.mjs` builds the whole guide into
+  one PDF via headless Chrome (no Puppeteer dependency), and with `--split`
+  also one PDF per category (`tldr-<category>.pdf`). CI runs it on every
+  deploy into `dist/`; the header's download button links to the full PDF and
+  each home-page section header has a "PDF" link to its category file. All
+  generated PDFs are gitignored. The script keeps its own copy of the
   category labels/colors: update them together with `CATEGORIES` in
-  `src/lib/topics.ts`. After content changes that alter structure, run
-  `npm run pdf` once and eyeball the output.
+  `src/lib/topics.ts` (a new category automatically gets its own PDF). After
+  content changes that alter structure, run `npm run pdf` once and eyeball
+  the output.
 
 ## How to add a topic (THE RULE)
 

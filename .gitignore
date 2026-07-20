@@ -25,3 +25,4 @@ dist-ssr
 
 # generated PDF (built locally or in CI, never committed)
 tldr.pdf
+tldr-*.pdf

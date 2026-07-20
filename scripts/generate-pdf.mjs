@@ -9,8 +9,10 @@
  * 3. Renders it to PDF with headless Chrome (--print-to-pdf), which is the
  *    same engine Puppeteer uses, with zero extra dependencies.
  *
- * Usage:  npm run pdf            -> writes ./tldr.pdf (gitignored)
- *         npm run pdf out.pdf    -> custom output path
+ * Usage:  npm run pdf                     -> writes ./tldr.pdf (gitignored)
+ *         npm run pdf -- out.pdf          -> custom output path
+ *         npm run pdf -- out.pdf --split  -> also writes one PDF per category
+ *                                            (tldr-frontend.pdf, ...) next to it
  * Chrome: set CHROME_PATH if your Chrome/Chromium is somewhere unusual.
  */
 import { execFileSync } from 'node:child_process'
@@ -22,7 +24,9 @@ import { parse } from 'yaml'
 
 const ROOT = path.join(import.meta.dirname, '..')
 const TOPICS_DIR = path.join(ROOT, 'src', 'content', 'topics')
-const OUT = path.resolve(process.argv[2] ?? path.join(ROOT, 'tldr.pdf'))
+const args = process.argv.slice(2).filter((a) => a !== '--split')
+const SPLIT = process.argv.includes('--split')
+const OUT = path.resolve(args[0] ?? path.join(ROOT, 'tldr.pdf'))
 
 // Keep these aligned with CATEGORIES in src/lib/topics.ts.
 const CATEGORIES = {
@@ -102,7 +106,9 @@ const topicHtml = (topic) => {
   </article>`
 }
 
-const html = `<!doctype html>
+const buildHtml = (groups, subtitle) => {
+  const count = groups.reduce((n, g) => n + g.topics.length, 0)
+  return `<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -151,13 +157,14 @@ const html = `<!doctype html>
 <body>
   <div class="cover">
     <h1>tl<span class="semi">;</span>dr</h1>
+    ${subtitle ? `<p style="font-size:16pt;font-weight:600;margin-top:4mm">${escape(subtitle)}</p>` : ''}
     <p>Dev notes that stick. Every topic is one analogy, one worked example,
     one real use case, a quick quiz, and one line to remember.</p>
-    <p class="count">${topics.length} topics · generated ${new Date().toISOString().slice(0, 10)} · edriso.github.io/tldr</p>
+    <p class="count">${count} topics · generated ${new Date().toISOString().slice(0, 10)} · edriso.github.io/tldr</p>
   </div>
   <div class="toc">
     <h2>Contents</h2>
-    ${byCategory
+    ${groups
       .map(
         (cat) => `
       <div class="toc-cat" style="color:${cat.color}">${escape(cat.label)}</div>
@@ -165,9 +172,10 @@ const html = `<!doctype html>
       )
       .join('')}
   </div>
-  ${byCategory.map((cat) => cat.topics.map(topicHtml).join('')).join('')}
+  ${groups.map((cat) => cat.topics.map(topicHtml).join('')).join('')}
 </body>
 </html>`
+}
 
 // ---------- render with headless Chrome ----------
 function findChrome() {
@@ -185,18 +193,30 @@ function findChrome() {
   throw new Error('Chrome not found. Set CHROME_PATH to your Chrome/Chromium binary.')
 }
 
+const chrome = findChrome()
 const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'tldr-pdf-'))
-const htmlPath = path.join(tmp, 'print.html')
-fs.writeFileSync(htmlPath, html)
 
-execFileSync(findChrome(), [
-  '--headless',
-  '--disable-gpu',
-  '--no-pdf-header-footer',
-  `--print-to-pdf=${OUT}`,
-  htmlPath,
-])
+function renderPdf(html, outPath, label) {
+  const htmlPath = path.join(tmp, 'print.html')
+  fs.writeFileSync(htmlPath, html)
+  execFileSync(chrome, [
+    '--headless',
+    '--disable-gpu',
+    '--no-pdf-header-footer',
+    `--print-to-pdf=${outPath}`,
+    htmlPath,
+  ])
+  const kb = Math.round(fs.statSync(outPath).size / 1024)
+  console.log(`Wrote ${outPath} (${kb} kB, ${label})`)
+}
+
+renderPdf(buildHtml(byCategory), OUT, `${topics.length} topics`)
+
+if (SPLIT) {
+  for (const cat of byCategory) {
+    const outPath = path.join(path.dirname(OUT), `tldr-${cat.key}.pdf`)
+    renderPdf(buildHtml([cat], cat.label), outPath, `${cat.topics.length} ${cat.label} topics`)
+  }
+}
 
 fs.rmSync(tmp, { recursive: true, force: true })
-const kb = Math.round(fs.statSync(OUT).size / 1024)
-console.log(`Wrote ${OUT} (${kb} kB, ${topics.length} topics)`)
